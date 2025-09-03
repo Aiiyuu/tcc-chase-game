@@ -3,6 +3,7 @@ const ts = require('gulp-typescript');
 const sass = require('gulp-sass')(require('sass'));
 const sourcemaps = require('gulp-sourcemaps');
 const browserSync = require('browser-sync').create();
+const through2 = require('through2');
 
 // Load TypeScript projects
 const tsProjectMain = ts.createProject('tsconfig.json');
@@ -12,24 +13,28 @@ const tsProjectWebsite = ts.createProject('tsconfig.json');
 const paths = {
   styles: {
     src: 'src/styles/**/*.scss',
-    dest: 'dist/styles'
+    dest: 'dist/styles',
   },
   scripts: {
     src: 'src/scripts/**/*.ts',
-    dest: 'dist/scripts'
+    dest: 'dist/scripts',
   },
   websiteScripts: {
     src: 'src/website/**/*.ts',
-    dest: 'dist/website'
+    dest: 'dist/website',
   },
   html: {
     src: 'src/**/*.html',
-    dest: 'dist/'
+    dest: 'dist/',
   },
   assets: {
     src: 'src/assets/**/*',
-    dest: 'dist/assets'
-  }
+    dest: 'dist/assets',
+  },
+  sounds: {
+    src: 'src/assets/sounds/**/*.mp3',
+    dest: 'dist/assets/sounds',
+  },
 };
 
 // Clean dist folder
@@ -40,7 +45,8 @@ async function clean() {
 
 // Compile SCSS to CSS with sourcemaps
 function styles() {
-  return gulp.src(paths.styles.src)
+  return gulp
+    .src(paths.styles.src)
     .pipe(sourcemaps.init())
     .pipe(sass().on('error', sass.logError))
     .pipe(sourcemaps.write('.'))
@@ -50,7 +56,8 @@ function styles() {
 
 // Compile main TypeScript files with sourcemaps
 function scripts() {
-  return gulp.src(paths.scripts.src)
+  return gulp
+    .src(paths.scripts.src)
     .pipe(sourcemaps.init())
     .pipe(tsProjectMain())
     .js.pipe(sourcemaps.write('.'))
@@ -60,7 +67,8 @@ function scripts() {
 
 // Compile website TypeScript files with sourcemaps
 function websiteScripts() {
-  return gulp.src(paths.websiteScripts.src)
+  return gulp
+    .src(paths.websiteScripts.src)
     .pipe(sourcemaps.init())
     .pipe(tsProjectWebsite())
     .js.pipe(sourcemaps.write('.'))
@@ -70,24 +78,30 @@ function websiteScripts() {
 
 // Copy HTML files to dist
 function html() {
-  return gulp.src(paths.html.src)
+  return gulp
+    .src(paths.html.src)
     .pipe(gulp.dest(paths.html.dest))
     .pipe(browserSync.stream());
 }
 
 // Copy static assets to dist
 function assets() {
-  return gulp.src(paths.assets.src)
-    .pipe(gulp.dest(paths.assets.dest));
+  return gulp
+    .src(paths.assets.src, {
+      base: 'src/assets',
+      buffer: true,
+      encoding: false,
+    })
+    .pipe(gulp.dest(paths.assets.dest))
+    .on('error', (err) => console.error('Assets error:', err));
 }
-
 
 // Watch files and reload browser on change
 function watch() {
   browserSync.init({
     server: {
-      baseDir: './dist'
-    }
+      baseDir: './dist',
+    },
   });
 
   gulp.watch(paths.styles.src, styles);
@@ -100,9 +114,8 @@ function watch() {
 // Build task: clean dist then compile everything in parallel
 const build = gulp.series(
   clean,
-  gulp.parallel(styles, scripts, websiteScripts, html, assets)
+  gulp.parallel(styles, scripts, websiteScripts, html, assets),
 );
-
 
 // Export tasks to CLI
 exports.clean = clean;
