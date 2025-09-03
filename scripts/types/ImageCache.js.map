@@ -1,0 +1,1 @@
+{"version":3,"sources":["types/ImageCache.ts"],"names":[],"mappings":"","file":"ImageCache.js","sourcesContent":["export interface DrawableImage {\n  x: number;\n  y: number;\n  width: number;\n  height: number;\n  img: HTMLImageElement | HTMLCanvasElement;\n}\n"]}

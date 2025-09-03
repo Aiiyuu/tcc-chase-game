@@ -6,9 +6,12 @@
  */
 export default function gameLoop(params) {
     const { game } = params;
-    (function () {
+    function loop() {
         // Update game here
         game.update();
-    })();
+        // Request the next animation frame to keep the loop going
+        requestAnimationFrame(loop);
+    }
+    loop();
 }
 //# sourceMappingURL=gameLoop.js.map
