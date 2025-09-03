@@ -1,0 +1,50 @@
+{
+  "name": "tcc-chase-game",
+  "version": "1.0.0",
+  "description": "A web game about a coach on a bicycle escaping TCC employees across Ukraine. Inspired by a legendary frontend coach from MATE Academy.",
+  "homepage": "https://github.com/Aiiyuu/tcc-chase-game#readme",
+  "bugs": {
+    "url": "https://github.com/Aiiyuu/tcc-chase-game/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aiiyuu/tcc-chase-game.git"
+  },
+  "license": "ISC",
+  "author": "Nazariy",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp",
+    "dev": "gulp watch",
+    "clean": "gulp clean",
+    "deploy": "npm run build && gh-pages -d dist",
+    "lint:ts": "eslint 'src/**/*.ts' --fix",
+    "lint:scss": "stylelint 'src/styles/**/*.scss' --fix",
+    "lint:html": "prettier --write 'src/**/*.html'",
+    "lint": "npm run lint:ts && npm run lint:scss && npm run lint:html"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.42.0",
+    "@typescript-eslint/parser": "^8.42.0",
+    "browser-sync": "^3.0.4",
+    "del": "^8.0.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "gh-pages": "^6.3.0",
+    "gulp": "^5.0.1",
+    "gulp-sass": "^6.0.1",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "htmlhint": "^1.6.3",
+    "prettier": "^3.6.2",
+    "sass": "^1.92.0",
+    "stylelint": "^16.23.1",
+    "stylelint-config-standard-scss": "^15.0.1",
+    "stylelint-scss": "^6.12.1",
+    "typescript": "^5.9.2"
+  }
+}
