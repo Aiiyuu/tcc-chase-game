@@ -1,0 +1,1 @@
+{"version":3,"sources":["types/config.ts"],"names":[],"mappings":"","file":"config.js","sourcesContent":["// Game config type\nexport interface GameConfig {\n  canvasWidth: number;\n  canvasHeight: number;\n}\n"]}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["types/gameLoop.ts"],"names":[],"mappings":"AAAA,OAAO,IAAI,MAAM,qBAAqB,CAAC","file":"gameLoop.js","sourcesContent":["import Game from '../entities/game.js';\n\nexport type GameLoopParams = {\n  ctx: CanvasRenderingContext2D;\n  game: Game;\n};\n"]}

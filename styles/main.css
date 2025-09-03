@@ -1,3 +1,16 @@
+#game {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+#game.show {
+  visibility: visible;
+}
+
 * {
   box-sizing: border-box;
 }

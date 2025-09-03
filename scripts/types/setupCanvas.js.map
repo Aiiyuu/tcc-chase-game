@@ -1,0 +1,1 @@
+{"version":3,"sources":["types/setupCanvas.ts"],"names":[],"mappings":"","file":"setupCanvas.js","sourcesContent":["export type CanvasSetupResult = {\n  canvas: HTMLCanvasElement;\n  ctx: CanvasRenderingContext2D;\n};\n"]}

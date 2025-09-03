@@ -1,2 +1,26 @@
-export {};
+/**
+ * setupCanvas.ts
+ *
+ * Creates and configures the HTML canvas element used for rendering the game.
+ * Appends the canvas to the game container in the DOM.
+ */
+import { gameConfig } from '../config.js';
+export default function setupCanvas() {
+    // Get the container element where the canvas will go
+    const gameWindow = document.getElementById('game');
+    if (!gameWindow)
+        throw new Error("Cannot find element with ID 'game'");
+    // Create the canvas element
+    const canvas = document.createElement('canvas');
+    canvas.width = gameConfig.canvasWidth;
+    canvas.height = gameConfig.canvasHeight;
+    // Add the canvas to the page
+    gameWindow.appendChild(canvas);
+    // Get the 2D drawing context
+    const ctx = canvas.getContext('2d');
+    if (!ctx)
+        throw new Error('Could not get 2D context');
+    // Return both for later use
+    return { canvas, ctx };
+}
 //# sourceMappingURL=setupCanvas.js.map
