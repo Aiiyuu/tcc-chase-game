@@ -7,9 +7,10 @@
 
 import type { GameLoopParams } from '../types/gameLoop.js';
 import handlePlayerMovement from './handlePlayerMovement.js';
+import updateTccEmployee from './updateTccEmployee.js';
 
 export default function gameLoop(params: GameLoopParams): void {
-  const { game, player } = params;
+  const { ctx, game, player, tccEmployee } = params;
 
   function loop(): void {
     // Update game here
@@ -17,6 +18,9 @@ export default function gameLoop(params: GameLoopParams): void {
 
     // Update player state
     player.update();
+
+    // Update TCC Employee' states
+    updateTccEmployee(ctx, tccEmployee);
 
     // Handle keyboard input for player movement
     handlePlayerMovement(player);

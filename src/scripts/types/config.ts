@@ -53,3 +53,14 @@ export interface PlayerConfig {
   jumpSound: string;
   jumpSoundLoudness: number;
 }
+
+export interface TccEmployerConfig {
+  gap: number[];
+  initialPosition: {
+    x: number;
+    y: number;
+  };
+  tccEmployerImages: string[];
+}
+
+export type Position = { x: number; y: number };

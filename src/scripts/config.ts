@@ -5,7 +5,11 @@
  * speeds, colors, and other gameplay settings.
  */
 
-import type { GameConfig, PlayerConfig } from './types/config.js';
+import type {
+  GameConfig,
+  PlayerConfig,
+  TccEmployerConfig,
+} from './types/config.js';
 
 // Get the game window object
 const gameWindow = document.getElementById('game') as HTMLCanvasElement;
@@ -15,7 +19,7 @@ if (!gameWindow) {
   throw new Error("Cannot find element with ID 'game'");
 }
 
-const GAME_SPEED: number = 5;
+const GAME_SPEED: number = 10;
 const MOTORCYCLE_COORDINATES = {
   x: 80,
   y: gameWindow.offsetHeight - 370,
@@ -85,8 +89,22 @@ export const playerConfig: PlayerConfig = {
   motorcycleSound: 'assets/sounds/motorcycle.mp3',
   motorcycleSoundLoudness: 0.4,
 
-  jumpHeight: 17,
-  gravity: 0.5,
+  jumpHeight: 12,
+  gravity: 0.15,
   jumpSound: 'assets/sounds/jump.mp3',
   jumpSoundLoudness: 0.2,
+};
+
+export const tccEmployerConfig: TccEmployerConfig = {
+  gap: [gameConfig.canvasWidth * 0.8, gameConfig.canvasWidth * 1.5],
+  initialPosition: {
+    x: gameConfig.canvasWidth,
+    y: gameConfig.canvasHeight - 130.2,
+  },
+  tccEmployerImages: [
+    'assets/sprites/obstacles/tcc-1.svg',
+    'assets/sprites/obstacles/tcc-2.svg',
+    'assets/sprites/obstacles/tcc-3.svg',
+    'assets/sprites/obstacles/tcc-4.svg',
+  ],
 };
