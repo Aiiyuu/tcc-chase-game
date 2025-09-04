@@ -150,8 +150,6 @@ export default class Game {
 
   /**
    * Updates the game state
-   *
-   * @param playerVelocity - The velocity of the player character (x, y) affecting the background.
    */
   public update(): void {
     this.updateRoadSegments();

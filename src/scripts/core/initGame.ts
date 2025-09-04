@@ -7,6 +7,7 @@
 
 // import entities
 import Game from '../entities/game.js';
+import Player from '../entities/player.js';
 
 // import types
 import type { GameInitResult } from '../types/initGame.js';
@@ -20,7 +21,9 @@ export default function initGame(
   // Initialize game entities
   const game = new Game(canvas, ctx);
 
+  const player = new Player(canvas, ctx);
+
   initKeyboardControls();
 
-  return { game };
+  return { game, player };
 }

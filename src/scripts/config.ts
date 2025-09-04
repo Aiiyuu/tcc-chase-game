@@ -5,7 +5,7 @@
  * speeds, colors, and other gameplay settings.
  */
 
-import type { GameConfig } from './types/config.js';
+import type { GameConfig, PlayerConfig } from './types/config.js';
 
 // Get the game window object
 const gameWindow = document.getElementById('game') as HTMLCanvasElement;
@@ -16,6 +16,10 @@ if (!gameWindow) {
 }
 
 const GAME_SPEED: number = 5;
+const MOTORCYCLE_COORDINATES = {
+  x: 80,
+  y: gameWindow.offsetHeight - 370,
+};
 
 export const gameConfig: GameConfig = {
   canvasWidth: gameWindow.offsetWidth,
@@ -65,4 +69,24 @@ export const gameConfig: GameConfig = {
   ],
 
   road: 'assets/sprites/background-objects/road/road.svg',
+};
+
+export const playerConfig: PlayerConfig = {
+  motorcyclePosition: MOTORCYCLE_COORDINATES,
+  wheelsPosition: {
+    x: [MOTORCYCLE_COORDINATES.x + 25.42, MOTORCYCLE_COORDINATES.x + 237.73],
+    y: [MOTORCYCLE_COORDINATES.y + 145.56, MOTORCYCLE_COORDINATES.y + 145.56],
+  },
+
+  imgScale: 1,
+  motorcycleImg: 'assets/sprites/player/motorcycle.svg',
+  wheelImg: 'assets/sprites/player/wheel.svg',
+
+  motorcycleSound: 'assets/sounds/motorcycle.mp3',
+  motorcycleSoundLoudness: 0.4,
+
+  jumpHeight: 17,
+  gravity: 0.5,
+  jumpSound: 'assets/sounds/jump.mp3',
+  jumpSoundLoudness: 0.2,
 };
