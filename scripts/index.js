@@ -10,13 +10,14 @@ import gameLoop from './loop/gameLoop.js';
 // Create canvas and get 2D drawing context
 const { canvas, ctx } = setupCanvas();
 // Initialize game, player and other elements (but don't start the game just yet)
-const { game } = initGame(canvas, ctx);
+const { game, player } = initGame(canvas, ctx);
 // Start the game only after the user clicks the "Start Game" button
 const startButton = document.getElementById('start-game');
 if (!startButton) {
     throw new Error("Cannot find element with ID 'start-game'");
 }
 startButton.addEventListener('click', () => {
-    gameLoop({ game, ctx });
+    player.startMotorcycleSound();
+    gameLoop({ game, player, ctx });
 });
 //# sourceMappingURL=index.js.map

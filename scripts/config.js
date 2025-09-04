@@ -11,6 +11,10 @@ if (!gameWindow) {
     throw new Error("Cannot find element with ID 'game'");
 }
 const GAME_SPEED = 5;
+const MOTORCYCLE_COORDINATES = {
+    x: 80,
+    y: gameWindow.offsetHeight - 370,
+};
 export const gameConfig = {
     canvasWidth: gameWindow.offsetWidth,
     canvasHeight: gameWindow.offsetHeight,
@@ -53,5 +57,21 @@ export const gameConfig = {
         'assets/sprites/background-objects/clouds/cloud-5.svg',
     ],
     road: 'assets/sprites/background-objects/road/road.svg',
+};
+export const playerConfig = {
+    motorcyclePosition: MOTORCYCLE_COORDINATES,
+    wheelsPosition: {
+        x: [MOTORCYCLE_COORDINATES.x + 25.42, MOTORCYCLE_COORDINATES.x + 237.73],
+        y: [MOTORCYCLE_COORDINATES.y + 145.56, MOTORCYCLE_COORDINATES.y + 145.56],
+    },
+    imgScale: 1,
+    motorcycleImg: 'assets/sprites/player/motorcycle.svg',
+    wheelImg: 'assets/sprites/player/wheel.svg',
+    motorcycleSound: 'assets/sounds/motorcycle.mp3',
+    motorcycleSoundLoudness: 0.4,
+    jumpHeight: 17,
+    gravity: 0.5,
+    jumpSound: 'assets/sounds/jump.mp3',
+    jumpSoundLoudness: 0.2,
 };
 //# sourceMappingURL=config.js.map
