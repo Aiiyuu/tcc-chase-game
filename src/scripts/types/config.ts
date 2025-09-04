@@ -30,3 +30,26 @@ export interface GameConfig {
 
   road: string;
 }
+
+export interface PlayerConfig {
+  motorcyclePosition: {
+    x: number;
+    y: number;
+  };
+  wheelsPosition: {
+    x: number[];
+    y: number[];
+  };
+
+  imgScale: number;
+  motorcycleImg: string;
+  wheelImg: string;
+
+  motorcycleSound: string;
+  motorcycleSoundLoudness: number;
+
+  jumpHeight: number;
+  gravity: number;
+  jumpSound: string;
+  jumpSoundLoudness: number;
+}
