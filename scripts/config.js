@@ -10,7 +10,7 @@ const gameWindow = document.getElementById('game');
 if (!gameWindow) {
     throw new Error("Cannot find element with ID 'game'");
 }
-const GAME_SPEED = 5;
+const GAME_SPEED = 10;
 const MOTORCYCLE_COORDINATES = {
     x: 80,
     y: gameWindow.offsetHeight - 370,
@@ -69,9 +69,22 @@ export const playerConfig = {
     wheelImg: 'assets/sprites/player/wheel.svg',
     motorcycleSound: 'assets/sounds/motorcycle.mp3',
     motorcycleSoundLoudness: 0.4,
-    jumpHeight: 17,
-    gravity: 0.5,
+    jumpHeight: 12,
+    gravity: 0.15,
     jumpSound: 'assets/sounds/jump.mp3',
     jumpSoundLoudness: 0.2,
+};
+export const tccEmployerConfig = {
+    gap: [gameConfig.canvasWidth * 0.8, gameConfig.canvasWidth * 1.5],
+    initialPosition: {
+        x: gameConfig.canvasWidth,
+        y: gameConfig.canvasHeight - 130.2,
+    },
+    tccEmployerImages: [
+        'assets/sprites/obstacles/tcc-1.svg',
+        'assets/sprites/obstacles/tcc-2.svg',
+        'assets/sprites/obstacles/tcc-3.svg',
+        'assets/sprites/obstacles/tcc-4.svg',
+    ],
 };
 //# sourceMappingURL=config.js.map
