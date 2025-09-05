@@ -137,7 +137,6 @@ export default class Player {
     this.draw();
   }
 
-
   /**
    * Draw elements on the screen
    */

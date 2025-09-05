@@ -19,7 +19,7 @@ if (!gameWindow) {
   throw new Error("Cannot find element with ID 'game'");
 }
 
-const GAME_SPEED: number = 1500; // pixels per seconds
+const GAME_SPEED: number = 1000; // pixels per seconds
 const MOTORCYCLE_COORDINATES = {
   x: 80,
   y: gameWindow.offsetHeight - 390,
