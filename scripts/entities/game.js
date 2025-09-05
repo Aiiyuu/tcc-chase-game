@@ -327,5 +327,15 @@ export default class Game {
         }
         this.cloudCache.updateCache(this.cloudSegments);
     }
+    subtractHealthPoints(damageTaken) {
+        if (this.healthPoints - damageTaken <= 0) {
+            this.healthPoints = 0;
+            return;
+        }
+        this.healthPoints -= damageTaken;
+    }
+    getIsDead() {
+        return this.healthPoints <= 0;
+    }
 }
 //# sourceMappingURL=game.js.map

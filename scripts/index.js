@@ -12,12 +12,17 @@ const { canvas, ctx } = setupCanvas();
 // Initialize game, player and other elements (but don't start the game just yet)
 const { game, player, tccEmployee } = initGame(canvas, ctx);
 // Start the game only after the user clicks the "Start Game" button
-const startButton = document.getElementById('start-game');
-if (!startButton) {
+const START_BTN = document.getElementById('start-game');
+if (!START_BTN) {
     throw new Error("Cannot find element with ID 'start-game'");
 }
-startButton.addEventListener('click', () => {
+// Load and set background music
+const BACKGROUND_MUSIC = document.getElementById('background-music');
+const MUSIC_VOLUME = 0.3;
+BACKGROUND_MUSIC.volume = MUSIC_VOLUME;
+START_BTN.addEventListener('click', () => {
     player.startMotorcycleSound();
+    BACKGROUND_MUSIC.play();
     gameLoop({ game, player, tccEmployee, ctx });
 });
 //# sourceMappingURL=index.js.map

@@ -34,6 +34,7 @@ export default class Player {
         this.motorcycleSoundLoudness = playerConfig.motorcycleSoundLoudness;
         this.audioContext = null;
         this.jumpBuffer = null;
+        this.soundEffectBuffers = [];
         this.canvas = canvas;
         this.ctx = ctx;
         this.imageCache = new ImageCache(canvas.width, canvas.height);
@@ -42,8 +43,9 @@ export default class Player {
         this.motorcycleAudio = new Audio(playerConfig.motorcycleSound);
         this.motorcycleAudio.volume = this.motorcycleSoundLoudness;
         this.motorcycleAudio.loop = true;
-        // Load jump sound
+        // Load player sounds
         this.loadJumpSound();
+        this.loadAllSoundEffects();
     }
     // Loads motorcycle and wheels images
     loadImages() {
@@ -58,6 +60,27 @@ export default class Player {
             ]);
             this.motorcycleImage = yield this.imageCache.rasterizeSVG(motorcycleImg);
             this.wheelImage = yield this.imageCache.rasterizeSVG(wheelImg);
+        });
+    }
+    // Load sound effects
+    loadAllSoundEffects() {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const win = window;
+                if (!this.audioContext) {
+                    this.audioContext = new (window.AudioContext ||
+                        win.webkitAudioContext)();
+                }
+                const bufferPromises = playerConfig.soundEffects.map((url) => __awaiter(this, void 0, void 0, function* () {
+                    const response = yield fetch(url);
+                    const arrayBuffer = yield response.arrayBuffer();
+                    return yield this.audioContext.decodeAudioData(arrayBuffer);
+                }));
+                this.soundEffectBuffers = yield Promise.all(bufferPromises);
+            }
+            catch (error) {
+                console.error('Failed to load sound effects:', error);
+            }
         });
     }
     /**
@@ -162,6 +185,37 @@ export default class Player {
         source.connect(gainNode);
         gainNode.connect(this.audioContext.destination);
         source.start(0);
+    }
+    /**
+     * Play random sound effect when player is hit
+     */
+    playRandomSound() {
+        // Exit if audio context isn't ready or no sound buffers loaded
+        if (!this.audioContext || this.soundEffectBuffers.length === 0)
+            return;
+        // Pick a random buffer from the loaded sound effects
+        const index = Math.floor(Math.random() * this.soundEffectBuffers.length);
+        const buffer = this.soundEffectBuffers[index];
+        // Create a buffer source and assign the selected sound
+        const source = this.audioContext.createBufferSource();
+        source.buffer = buffer;
+        // Create a gain node to control volume
+        const gainNode = this.audioContext.createGain();
+        gainNode.gain.value = playerConfig.soundEffectLoudness;
+        // Connect nodes: source → gain → output
+        source.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        // Play the sound
+        source.start(0);
+    }
+    getPosition() {
+        return { x: this.motorcycleX, y: this.motorcycleY };
+    }
+    getMotorcycleSize() {
+        return {
+            width: this.motorcycleImage.width * playerConfig.imgScale,
+            height: this.motorcycleImage.height * playerConfig.imgScale,
+        };
     }
 }
 //# sourceMappingURL=player.js.map

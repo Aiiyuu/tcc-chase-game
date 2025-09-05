@@ -6,6 +6,7 @@
  */
 import handlePlayerMovement from './handlePlayerMovement.js';
 import updateTccEmployee from './updateTccEmployee.js';
+import detectPlayerTccEmployeeCollision from './detectPlayerTccEmployeeCollision.js';
 export default function gameLoop(params) {
     const { ctx, game, player, tccEmployee } = params;
     function loop() {
@@ -17,8 +18,15 @@ export default function gameLoop(params) {
         updateTccEmployee(ctx, tccEmployee);
         // Handle keyboard input for player movement
         handlePlayerMovement(player);
-        // Request the next animation frame to keep the loop going
-        requestAnimationFrame(loop);
+        // Detect and handle collisions between TCC Employee and player
+        detectPlayerTccEmployeeCollision(game, player, tccEmployee);
+        // End game if player is dead
+        if (!game.getIsDead()) {
+            // Request the next animation frame to keep the loop going
+            requestAnimationFrame(loop);
+            return;
+        }
+        player.stopMotorcycleSound();
     }
     loop();
 }
