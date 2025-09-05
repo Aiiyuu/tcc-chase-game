@@ -5,7 +5,7 @@
  */
 import TccEmployer from '../entities/tccEmployer.js';
 import { gameConfig, tccEmployerConfig } from '../config.js';
-export default function updateTccEmployee(ctx, tccEmployee) {
+export default function updateTccEmployee(ctx, tccEmployee, deltaTime) {
     // Remove off screen employer (left side)
     if (tccEmployee.length > 0 && tccEmployee[0].isOffScreen()) {
         tccEmployee.shift();
@@ -31,7 +31,7 @@ export default function updateTccEmployee(ctx, tccEmployee) {
     }
     // Update all existing employees
     for (const tccEmployer of tccEmployee) {
-        tccEmployer.update();
+        tccEmployer.update(deltaTime);
     }
 }
 //# sourceMappingURL=updateTccEmployee.js.map

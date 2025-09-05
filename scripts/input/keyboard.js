@@ -5,6 +5,7 @@
  * It tracks both the continuous pressed state of keys
  * and whether a key was just clicked (pressed once).
  */
+import { USED_KEYS } from '../config.js';
 const keyState = {};
 const keyClickedState = {};
 /**
@@ -14,6 +15,10 @@ const keyClickedState = {};
 export function initKeyboardControls() {
     window.addEventListener('keydown', (e) => {
         const key = e.code.toLowerCase();
+        // Block default for game control keys
+        if (USED_KEYS.includes(key)) {
+            e.preventDefault();
+        }
         // If key wasn't already held, mark it as just clicked
         if (!keyState[key]) {
             keyClickedState[key] = true;
@@ -23,6 +28,10 @@ export function initKeyboardControls() {
     });
     window.addEventListener('keyup', (e) => {
         const key = e.code.toLowerCase();
+        // Block default for game control keys
+        if (USED_KEYS.includes(key)) {
+            e.preventDefault();
+        }
         // Reset both pressed and clicked states
         keyState[key] = false;
         keyClickedState[key] = false;

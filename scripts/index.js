@@ -16,13 +16,9 @@ const START_BTN = document.getElementById('start-game');
 if (!START_BTN) {
     throw new Error("Cannot find element with ID 'start-game'");
 }
-// Load and set background music
-const BACKGROUND_MUSIC = document.getElementById('background-music');
-const MUSIC_VOLUME = 0.3;
-BACKGROUND_MUSIC.volume = MUSIC_VOLUME;
 START_BTN.addEventListener('click', () => {
     player.startMotorcycleSound();
-    BACKGROUND_MUSIC.play();
+    game.startBackgroundMusic();
     gameLoop({ game, player, tccEmployee, ctx });
 });
 //# sourceMappingURL=index.js.map

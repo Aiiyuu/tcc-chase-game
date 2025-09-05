@@ -10,15 +10,18 @@ const gameWindow = document.getElementById('game');
 if (!gameWindow) {
     throw new Error("Cannot find element with ID 'game'");
 }
-const GAME_SPEED = 10;
+const GAME_SPEED = 1000; // pixels per seconds
 const MOTORCYCLE_COORDINATES = {
     x: 80,
-    y: gameWindow.offsetHeight - 370,
+    y: gameWindow.offsetHeight - 390,
 };
+export const USED_KEYS = ['space'];
 export const gameConfig = {
     canvasWidth: gameWindow.offsetWidth,
     canvasHeight: gameWindow.offsetHeight,
     canvasBackground: '#F6F1E9',
+    backgroundMusic: 'assets/sounds/background-music.mp3',
+    backgroundMusicLoudness: 0.3,
     healthPoints: 100,
     damage: 10,
     healthPointsFont: '40px Bangers',
@@ -30,22 +33,24 @@ export const gameConfig = {
         y: 25,
     },
     gameSpeed: GAME_SPEED,
-    buildingsGap: [10, 100], // min, max
+    buildingsGap: [40, 150], // min, max
     buildingsScale: 1,
     buildings: [
-        'assets/sprites/background-objects/buildings/house-1.svg',
-        'assets/sprites/background-objects/buildings/house-2.svg',
-        'assets/sprites/background-objects/buildings/house-3.svg',
-        'assets/sprites/background-objects/buildings/house-4.svg',
-        'assets/sprites/background-objects/buildings/house-5.svg',
+        'assets/sprites/background-objects/buildings/house-1.png',
+        'assets/sprites/background-objects/buildings/house-2.png',
+        'assets/sprites/background-objects/buildings/house-3.png',
+        'assets/sprites/background-objects/buildings/house-4.png',
+        'assets/sprites/background-objects/buildings/house-5.png',
+        'assets/sprites/background-objects/buildings/house-6.png',
+        'assets/sprites/background-objects/buildings/house-7.png',
     ],
-    treesGap: [150, 450],
+    treesGap: [200, 500],
     treesScale: 1,
     trees: [
-        'assets/sprites/background-objects/trees/tree-1.svg',
-        'assets/sprites/background-objects/trees/tree-2.svg',
-        'assets/sprites/background-objects/trees/tree-3.svg',
-        'assets/sprites/background-objects/trees/tree-4.svg',
+        'assets/sprites/background-objects/trees/tree-1.png',
+        'assets/sprites/background-objects/trees/tree-2.png',
+        'assets/sprites/background-objects/trees/tree-3.png',
+        'assets/sprites/background-objects/trees/tree-4.png',
     ],
     cloudsGap: [-150, 50],
     cloudsScale: 1,
@@ -57,21 +62,21 @@ export const gameConfig = {
         'assets/sprites/background-objects/clouds/cloud-4.svg',
         'assets/sprites/background-objects/clouds/cloud-5.svg',
     ],
-    road: 'assets/sprites/background-objects/road/road.svg',
+    road: 'assets/sprites/background-objects/road/road.png',
 };
 export const playerConfig = {
     motorcyclePosition: MOTORCYCLE_COORDINATES,
     wheelsPosition: {
         x: [MOTORCYCLE_COORDINATES.x + 25.42, MOTORCYCLE_COORDINATES.x + 237.73],
-        y: [MOTORCYCLE_COORDINATES.y + 145.56, MOTORCYCLE_COORDINATES.y + 145.56],
+        y: [MOTORCYCLE_COORDINATES.y + 161.5, MOTORCYCLE_COORDINATES.y + 161.5],
     },
     imgScale: 1,
-    motorcycleImg: 'assets/sprites/player/motorcycle.svg',
-    wheelImg: 'assets/sprites/player/wheel.svg',
+    motorcycleImg: 'assets/sprites/player/motorcycle.png',
+    wheelImg: 'assets/sprites/player/wheel.png',
     motorcycleSound: 'assets/sounds/player/motorcycle.mp3',
     motorcycleSoundLoudness: 0.3,
-    jumpHeight: 12,
-    gravity: 0.15,
+    jumpHeight: 1400,
+    gravity: 2000, // pixels per second
     jumpSound: 'assets/sounds/player/jump.mp3',
     jumpSoundLoudness: 0.1,
     soundEffects: [
@@ -89,22 +94,22 @@ export const playerConfig = {
     soundEffectLoudness: 1,
 };
 export const tccEmployerConfig = {
-    gap: [gameConfig.canvasWidth * 0.8, gameConfig.canvasWidth * 1.5],
+    gap: [2500, 3000],
     initialPosition: {
         x: gameConfig.canvasWidth,
         y: gameConfig.canvasHeight - 130.2,
     },
     tccEmployerImages: [
-        'assets/sprites/obstacles/tcc-1.svg',
-        'assets/sprites/obstacles/tcc-2.svg',
-        'assets/sprites/obstacles/tcc-3.svg',
-        'assets/sprites/obstacles/tcc-4.svg',
+        'assets/sprites/obstacles/tcc-1.png',
+        'assets/sprites/obstacles/tcc-2.png',
+        'assets/sprites/obstacles/tcc-3.png',
+        'assets/sprites/obstacles/tcc-4.png',
     ],
     graveImages: [
-        'assets/sprites/obstacles/grave-1.svg',
-        'assets/sprites/obstacles/grave-2.svg',
-        'assets/sprites/obstacles/grave-3.svg',
-        'assets/sprites/obstacles/grave-4.svg',
+        'assets/sprites/obstacles/grave-1.png',
+        'assets/sprites/obstacles/grave-2.png',
+        'assets/sprites/obstacles/grave-3.png',
+        'assets/sprites/obstacles/grave-4.png',
     ],
 };
 //# sourceMappingURL=config.js.map

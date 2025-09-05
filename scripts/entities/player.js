@@ -4,15 +4,6 @@
  * Player logic and state management for the tcc chase game
  * Handles a player object, updating its states, collision detection, and drawing.
  */
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 import ImageCache from '../utils/ImageCache.js';
 import { gameConfig, playerConfig } from '../config.js';
 export default class Player {
@@ -48,53 +39,51 @@ export default class Player {
         this.loadAllSoundEffects();
     }
     // Loads motorcycle and wheels images
-    loadImages() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const motorcycleImg = new Image();
-            const wheelImg = new Image();
-            motorcycleImg.src = playerConfig.motorcycleImg;
-            wheelImg.src = playerConfig.wheelImg;
-            yield Promise.all([
-                new Promise((res) => (motorcycleImg.onload = res)),
-                new Promise((res) => (wheelImg.onload = res)),
-            ]);
-            this.motorcycleImage = yield this.imageCache.rasterizeSVG(motorcycleImg);
-            this.wheelImage = yield this.imageCache.rasterizeSVG(wheelImg);
-        });
+    async loadImages() {
+        const motorcycleImg = new Image();
+        const wheelImg = new Image();
+        motorcycleImg.src = playerConfig.motorcycleImg;
+        wheelImg.src = playerConfig.wheelImg;
+        await Promise.all([
+            new Promise((res) => (motorcycleImg.onload = res)),
+            new Promise((res) => (wheelImg.onload = res)),
+        ]);
+        this.motorcycleImage = await this.imageCache.rasterizeSVG(motorcycleImg);
+        this.wheelImage = await this.imageCache.rasterizeSVG(wheelImg);
     }
     // Load sound effects
-    loadAllSoundEffects() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const win = window;
-                if (!this.audioContext) {
-                    this.audioContext = new (window.AudioContext ||
-                        win.webkitAudioContext)();
-                }
-                const bufferPromises = playerConfig.soundEffects.map((url) => __awaiter(this, void 0, void 0, function* () {
-                    const response = yield fetch(url);
-                    const arrayBuffer = yield response.arrayBuffer();
-                    return yield this.audioContext.decodeAudioData(arrayBuffer);
-                }));
-                this.soundEffectBuffers = yield Promise.all(bufferPromises);
+    async loadAllSoundEffects() {
+        try {
+            const win = window;
+            if (!this.audioContext) {
+                this.audioContext = new (window.AudioContext ||
+                    win.webkitAudioContext)();
             }
-            catch (error) {
-                console.error('Failed to load sound effects:', error);
-            }
-        });
+            const bufferPromises = playerConfig.soundEffects.map(async (url) => {
+                const response = await fetch(url);
+                const arrayBuffer = await response.arrayBuffer();
+                return await this.audioContext.decodeAudioData(arrayBuffer);
+            });
+            this.soundEffectBuffers = await Promise.all(bufferPromises);
+        }
+        catch (error) {
+            console.error('Failed to load sound effects:', error);
+        }
     }
     /**
      * Updates the player state
      */
-    update() {
-        // Rotate based on speed — tweak factor if rotation is too fast or slow
-        this.wheelRotation += this.gameSpeed * 0.05;
+    update(deltaTime) {
+        // Rotate wheels
+        this.wheelRotation += this.gameSpeed * deltaTime * 0.05;
         if (this.isJumping) {
-            this.motorcycleY += this.jumpVelocity;
+            // Apply movement
+            this.motorcycleY += this.jumpVelocity * deltaTime;
             for (let i = 0; i < this.wheelY.length; i++) {
-                this.wheelY[i] += this.jumpVelocity;
+                this.wheelY[i] += this.jumpVelocity * deltaTime;
             }
-            this.jumpVelocity += this.gravity;
+            // Apply gravity
+            this.jumpVelocity += this.gravity * deltaTime;
             // Landed
             if (this.motorcycleY >= this.initialMotorcycleY) {
                 this.motorcycleY = this.initialMotorcycleY;
@@ -128,7 +117,7 @@ export default class Player {
             // Translate to center of the wheel
             this.ctx.translate(x + wheelWidth / 2, y + wheelHeight / 2);
             // Rotate based on the wheelRotation
-            this.ctx.rotate(this.wheelRotation);
+            this.ctx.rotate(-this.wheelRotation);
             // Draw the wheel image centered
             this.ctx.drawImage(this.wheelImage, -wheelWidth / 2, -wheelHeight / 2, wheelWidth, wheelHeight);
             this.ctx.restore();
@@ -160,19 +149,17 @@ export default class Player {
         }
     }
     // Load jump sound
-    loadJumpSound() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const win = window;
-                this.audioContext = new (window.AudioContext || win.webkitAudioContext)();
-                const response = yield fetch(playerConfig.jumpSound);
-                const arrayBuffer = yield response.arrayBuffer();
-                this.jumpBuffer = yield this.audioContext.decodeAudioData(arrayBuffer);
-            }
-            catch (error) {
-                console.error('Failed to load jump sound:', error);
-            }
-        });
+    async loadJumpSound() {
+        try {
+            const win = window;
+            this.audioContext = new (window.AudioContext || win.webkitAudioContext)();
+            const response = await fetch(playerConfig.jumpSound);
+            const arrayBuffer = await response.arrayBuffer();
+            this.jumpBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+        }
+        catch (error) {
+            console.error('Failed to load jump sound:', error);
+        }
     }
     // Play jump sound
     playJumpSound() {

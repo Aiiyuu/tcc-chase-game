@@ -14,15 +14,6 @@
  * The class is designed to be extended for specific use cases, such as handling
  * building sprites, road segments, or any other visual elements in a game.
  */
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 export default class ImageCache {
     constructor(width, height) {
         this.width = width;
@@ -37,19 +28,17 @@ export default class ImageCache {
     /**
      * Rasterize an SVG image (or any image) into a canvas
      */
-    rasterizeSVG(img) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
-            const ctx = canvas.getContext('2d');
-            if (!img.complete) {
-                yield new Promise((resolve) => (img.onload = resolve));
-            }
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            return canvas;
-        });
+    async rasterizeSVG(img) {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (!img.complete) {
+            await new Promise((resolve) => (img.onload = resolve));
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        return canvas;
     }
     /**
      * Add images to the cache (either image or canvas)

@@ -4,16 +4,6 @@
  * Core game logic and state management for the tcc chase game
  * Handles game objects, updating their states, collision detection, and drawing.
  */
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-import ImageCache from '../utils/ImageCache.js';
 import { gameConfig } from '../config.js';
 export default class Game {
     constructor(canvas, ctx) {
@@ -34,35 +24,48 @@ export default class Game {
         this.cloudImages = [];
         this.cloudsGap = gameConfig.cloudsGap;
         this.healthPoints = gameConfig.healthPoints;
-        this.heartIconIsLoaded = false;
+        this.backgroundMusic = null;
+        this.backgroundMusicLoudness = gameConfig.backgroundMusicLoudness;
         this.canvas = canvas;
         this.ctx = ctx;
-        // Initialize building cache with canvas size
-        this.roadCache = new ImageCache(this.canvas.width, this.canvas.height);
         // Initialize road image and cache
         this.roadImg = new Image();
         this.roadImg.src = gameConfig.road;
         this.roadImg.onload = () => {
             this.initRoadCache();
         };
-        // Initialize building cache with canvas size
-        this.buildingCache = new ImageCache(this.canvas.width, this.canvas.height);
         // Load building images asynchronously
         this.loadBuildingImages(gameConfig.buildings);
-        // Initialize tree cache with canvas size
-        this.treeCache = new ImageCache(this.canvas.width, this.canvas.height);
         // Load tree images asynchronously
         this.loadTreeImages(gameConfig.trees);
-        // Initialize cloud cache with canvas size
-        this.cloudCache = new ImageCache(this.canvas.width, this.canvas.height);
         // Load cloud images asynchronously
         this.loadCloudImages(gameConfig.clouds);
         // Load heart icon
         this.heartIcon = new Image();
         this.heartIcon.src = gameConfig.heartIcon;
-        this.heartIcon.onload = () => {
-            this.heartIconIsLoaded = true;
-        };
+        // Load background music
+        this.backgroundMusic = new Audio(gameConfig.backgroundMusic);
+        this.backgroundMusic.volume = this.backgroundMusicLoudness;
+        this.backgroundMusic.loop = true;
+    }
+    /**
+     * Rasterizes an SVG image by drawing it onto a canvas and returning the resulting canvas.
+     * Waits for the image to load if it's not yet complete.
+     *
+     * @param img - The SVG image element to rasterize.
+     * @returns A Promise that resolves to a canvas element with the rasterized image.
+     */
+    async rasterizeSVG(img) {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        if (!img.complete) {
+            await new Promise((resolve) => (img.onload = resolve));
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        return canvas;
     }
     // Initialize road cache and road segments for scrolling
     initRoadCache() {
@@ -80,53 +83,45 @@ export default class Game {
                 height: roadHeight,
             });
         }
-        this.roadCache = new ImageCache(this.canvas.width, this.canvas.height);
-        this.roadCache.updateCache(this.roadSegments);
     }
     // Load buildings, rasterize and store in buildingImages array
-    loadBuildingImages(paths) {
-        return __awaiter(this, void 0, void 0, function* () {
-            for (const path of paths) {
-                const img = new Image();
-                img.src = path;
-                yield new Promise((res) => (img.onload = res));
-                const rasterized = yield this.buildingCache.rasterizeSVG(img);
-                this.buildingImages.push(rasterized);
-            }
-        });
+    async loadBuildingImages(paths) {
+        for (const path of paths) {
+            const img = new Image();
+            img.src = path;
+            await new Promise((res) => (img.onload = res));
+            const rasterized = await this.rasterizeSVG(img);
+            this.buildingImages.push(rasterized);
+        }
     }
     // Load trees, rasterize and store in treeImages array
-    loadTreeImages(paths) {
-        return __awaiter(this, void 0, void 0, function* () {
-            for (const path of paths) {
-                const img = new Image();
-                img.src = path;
-                yield new Promise((res) => (img.onload = res));
-                const rasterized = yield this.treeCache.rasterizeSVG(img);
-                this.treeImages.push(rasterized);
-            }
-        });
+    async loadTreeImages(paths) {
+        for (const path of paths) {
+            const img = new Image();
+            img.src = path;
+            await new Promise((res) => (img.onload = res));
+            const rasterized = await this.rasterizeSVG(img);
+            this.treeImages.push(rasterized);
+        }
     }
     // Load clouds, rasterize and store in treeImages array
-    loadCloudImages(paths) {
-        return __awaiter(this, void 0, void 0, function* () {
-            for (const path of paths) {
-                const img = new Image();
-                img.src = path;
-                yield new Promise((res) => (img.onload = res));
-                const rasterized = yield this.cloudCache.rasterizeSVG(img);
-                this.cloudImages.push(rasterized);
-            }
-        });
+    async loadCloudImages(paths) {
+        for (const path of paths) {
+            const img = new Image();
+            img.src = path;
+            await new Promise((res) => (img.onload = res));
+            const rasterized = await this.rasterizeSVG(img);
+            this.cloudImages.push(rasterized);
+        }
     }
     /**
      * Updates the game state
      */
-    update() {
-        this.updateRoadSegments();
-        this.updateBuildingSegments();
-        this.updateTreeSegments();
-        this.updateCloudSegments();
+    update(deltaTime) {
+        this.updateRoadSegments(deltaTime);
+        this.updateBuildingSegments(deltaTime);
+        this.updateTreeSegments(deltaTime);
+        this.updateCloudSegments(deltaTime);
         this.draw();
     }
     /**
@@ -137,13 +132,21 @@ export default class Game {
         this.ctx.fillStyle = gameConfig.canvasBackground;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         // Draw clouds first (background)
-        this.cloudCache.draw(this.ctx);
-        // Draw buildings on top of the road
-        this.buildingCache.draw(this.ctx);
-        // Draw road on top of the buildings
-        this.roadCache.draw(this.ctx);
-        // Draw trees on top of the road
-        this.treeCache.draw(this.ctx);
+        for (const seg of this.cloudSegments) {
+            this.ctx.drawImage(seg.img, Math.round(seg.x), Math.round(seg.y), Math.round(seg.width), Math.round(seg.height));
+        }
+        // Draw buildings
+        for (const seg of this.buildingSegments) {
+            this.ctx.drawImage(seg.img, Math.round(seg.x), Math.round(seg.y), Math.round(seg.width), Math.round(seg.height));
+        }
+        // Draw road
+        for (const seg of this.roadSegments) {
+            this.ctx.drawImage(seg.img, Math.round(seg.x), Math.round(seg.y), Math.round(seg.width), Math.round(seg.height));
+        }
+        // Draw trees
+        for (const seg of this.treeSegments) {
+            this.ctx.drawImage(seg.img, Math.round(seg.x), Math.round(seg.y), Math.round(seg.width), Math.round(seg.height));
+        }
         // Draw health
         this.drawHealth();
     }
@@ -158,11 +161,9 @@ export default class Game {
         this.ctx.drawImage(this.heartIcon, x, y, this.heartIcon.width, this.heartIcon.height);
         const heartCenterY = y + this.heartIcon.height / 2;
         const textX = x + this.heartIcon.width + gameConfig.healthPointsTextMargin;
-        // Set text styles
         this.ctx.font = gameConfig.healthPointsFont;
         this.ctx.fillStyle = gameConfig.healthPointsTextColor;
         this.ctx.textBaseline = 'middle';
-        // Draw the health points count
         this.ctx.fillText(this.healthPoints.toString(), textX, heartCenterY);
     }
     /**
@@ -174,9 +175,9 @@ export default class Game {
      * - Creates and stores each road segment with its initial x-position,
      *   width, and height based on the loaded road image.
      */
-    updateRoadSegments() {
+    updateRoadSegments(deltaTime) {
         for (const seg of this.roadSegments) {
-            seg.x -= this.gameSpeed;
+            seg.x -= this.gameSpeed * deltaTime;
         }
         // Recycle road segments
         const first = this.roadSegments[0];
@@ -193,16 +194,15 @@ export default class Game {
                 });
             }
         }
-        this.roadCache.updateCache(this.roadSegments);
     }
     /**
      * Moves buildings, removes those that go off-screen, and spawns new ones.
      * @private
      */
-    updateBuildingSegments() {
+    updateBuildingSegments(deltaTime) {
         // Move buildings
         for (const building of this.buildingSegments) {
-            building.x -= this.gameSpeed;
+            building.x -= this.gameSpeed * deltaTime;
         }
         // Remove buildings off screen
         while (this.buildingSegments.length > 0 &&
@@ -237,16 +237,15 @@ export default class Game {
             });
             lastX = x + scaledWidth;
         }
-        this.buildingCache.updateCache(this.buildingSegments);
     }
     /**
      * Moves trees, removes those that go off-screen, and spawns new ones.
      * @private
      */
-    updateTreeSegments() {
+    updateTreeSegments(deltaTime) {
         // Move trees
         for (const tree of this.treeSegments) {
-            tree.x -= this.gameSpeed;
+            tree.x -= this.gameSpeed * deltaTime;
         }
         // Remove trees off screen
         while (this.treeSegments.length > 0 &&
@@ -282,16 +281,15 @@ export default class Game {
             });
             lastX = x + scaledWidth;
         }
-        this.treeCache.updateCache(this.treeSegments);
     }
     /**
      * Moves clouds, removes those that go off-screen, and spawns new ones.
      * @private
      */
-    updateCloudSegments() {
+    updateCloudSegments(deltaTime) {
         // Move clouds
         for (const cloud of this.cloudSegments) {
-            cloud.x -= gameConfig.cloudsSpeed;
+            cloud.x -= gameConfig.cloudsSpeed * deltaTime;
         }
         // Remove clouds off screen
         while (this.cloudSegments.length > 0 &&
@@ -325,7 +323,6 @@ export default class Game {
             });
             lastX = x + scaledWidth;
         }
-        this.cloudCache.updateCache(this.cloudSegments);
     }
     subtractHealthPoints(damageTaken) {
         if (this.healthPoints - damageTaken <= 0) {
@@ -333,6 +330,21 @@ export default class Game {
             return;
         }
         this.healthPoints -= damageTaken;
+    }
+    // Starts background music
+    startBackgroundMusic() {
+        if (this.backgroundMusic && this.backgroundMusic.paused) {
+            this.backgroundMusic.play().catch((err) => {
+                console.warn('Background music failed to play:', err);
+            });
+        }
+    }
+    // Stops background music
+    stopBackgroundMusic() {
+        if (this.backgroundMusic && !this.backgroundMusic.paused) {
+            this.backgroundMusic.pause();
+            this.backgroundMusic.currentTime = 0;
+        }
     }
     getIsDead() {
         return this.healthPoints <= 0;
