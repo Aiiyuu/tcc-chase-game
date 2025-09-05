@@ -106,18 +106,20 @@ export default class Player {
   /**
    * Updates the player state
    */
-  public update(): void {
-    // Rotate based on speed — tweak factor if rotation is too fast or slow
-    this.wheelRotation += this.gameSpeed * 0.05;
+  public update(deltaTime: number): void {
+    // Rotate wheels
+    this.wheelRotation += this.gameSpeed * deltaTime * 0.05;
 
     if (this.isJumping) {
-      this.motorcycleY += this.jumpVelocity;
+      // Apply movement
+      this.motorcycleY += this.jumpVelocity * deltaTime;
 
       for (let i: number = 0; i < this.wheelY.length; i++) {
-        this.wheelY[i]! += this.jumpVelocity;
+        this.wheelY[i]! += this.jumpVelocity * deltaTime;
       }
 
-      this.jumpVelocity += this.gravity;
+      // Apply gravity
+      this.jumpVelocity += this.gravity * deltaTime;
 
       // Landed
       if (this.motorcycleY >= this.initialMotorcycleY) {
@@ -134,6 +136,7 @@ export default class Player {
 
     this.draw();
   }
+
 
   /**
    * Draw elements on the screen
@@ -163,7 +166,7 @@ export default class Player {
       this.ctx.translate(x + wheelWidth / 2, y + wheelHeight / 2);
 
       // Rotate based on the wheelRotation
-      this.ctx.rotate(this.wheelRotation);
+      this.ctx.rotate(-this.wheelRotation);
 
       // Draw the wheel image centered
       this.ctx.drawImage(

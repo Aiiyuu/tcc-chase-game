@@ -13,15 +13,20 @@ import detectPlayerTccEmployeeCollision from './detectPlayerTccEmployeeCollision
 export default function gameLoop(params: GameLoopParams): void {
   const { ctx, game, player, tccEmployee } = params;
 
-  function loop(): void {
-    // Update game here
-    game.update();
+  let lastTime: number = performance.now();
 
-    // Update player state
-    player.update();
+  function loop(currentTime: number): void {
+    const deltaTime: number = (currentTime - lastTime) / 1000; // Convert to seconds
+    lastTime = currentTime;
+
+    // Update game here
+    game.update(deltaTime);
 
     // Update TCC Employee' states
-    updateTccEmployee(ctx, tccEmployee);
+    updateTccEmployee(ctx, tccEmployee, deltaTime);
+
+    // Update player state
+    player.update(deltaTime);
 
     // Handle keyboard input for player movement
     handlePlayerMovement(player);
@@ -31,13 +36,15 @@ export default function gameLoop(params: GameLoopParams): void {
 
     // End game if player is dead
     if (!game.getIsDead()) {
-      // Request the next animation frame to keep the loop going
       requestAnimationFrame(loop);
       return;
     }
 
+    // Stop playing sounds when player is dead
+    game.stopBackgroundMusic();
     player.stopMotorcycleSound();
   }
 
-  loop();
+  // Request the next animation frame to keep the loop going
+  requestAnimationFrame(loop);
 }

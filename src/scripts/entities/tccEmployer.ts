@@ -71,9 +71,9 @@ export default class TccEmployer {
   /**
    * Updates the TCC Employer objects' states
    */
-  public update(): void {
+  public update(deltaTime: number): void {
     // Move Employers
-    this.position.x -= this.gameSpeed;
+    this.position.x -= this.gameSpeed * deltaTime;
 
     this.draw();
   }

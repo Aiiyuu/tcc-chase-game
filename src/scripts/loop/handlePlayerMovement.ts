@@ -9,7 +9,7 @@ import { isKeyClicked } from '../input/keyboard.js';
 import Player from '../entities/player.js';
 
 export default function handlePlayerMovement(player: Player): void {
-  if (isKeyClicked('KeyW')) {
+  if (isKeyClicked('space')) {
     player.jump();
   }
 }

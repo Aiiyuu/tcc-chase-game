@@ -11,6 +11,7 @@ import type { Position } from '../types/config.js';
 export default function updateTccEmployee(
   ctx: CanvasRenderingContext2D,
   tccEmployee: TccEmployer[],
+  deltaTime: number,
 ): void {
   // Remove off screen employer (left side)
   if (tccEmployee.length > 0 && tccEmployee[0]!.isOffScreen()) {
@@ -20,7 +21,7 @@ export default function updateTccEmployee(
   const [gapMin = 150, gapMax = 400] = tccEmployerConfig.gap;
 
   // Determine the x position of the last TCC employee
-  const lastX =
+  const lastX: number =
     tccEmployee.length > 0
       ? tccEmployee[tccEmployee.length - 1]!.getPosition().x
       : gameConfig.canvasWidth;
@@ -28,11 +29,11 @@ export default function updateTccEmployee(
   // Only add new employee if the last employee is far enough left to add a new one on the right
   if (lastX <= gameConfig.canvasWidth) {
     // Generate a random gap between 200 and 500
-    const randomGap =
+    const randomGap: number =
       Math.floor(Math.random() * (gapMax - gapMin + 1)) + gapMin;
 
     // New employee x is last employee's x + gap
-    const newX = lastX + randomGap;
+    const newX: number = lastX + randomGap;
 
     // Position on right side with new gap
     const position: Position = {
@@ -46,6 +47,6 @@ export default function updateTccEmployee(
 
   // Update all existing employees
   for (const tccEmployer of tccEmployee) {
-    tccEmployer.update();
+    tccEmployer.update(deltaTime);
   }
 }

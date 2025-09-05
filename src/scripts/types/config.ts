@@ -5,6 +5,9 @@ export interface GameConfig {
   canvasBackground: string;
   gameSpeed: number;
 
+  backgroundMusic: string;
+  backgroundMusicLoudness: number;
+
   healthPoints: number;
   damage: number;
   healthPointsFont: string;
