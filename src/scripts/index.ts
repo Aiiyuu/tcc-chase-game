@@ -22,17 +22,9 @@ if (!START_BTN) {
   throw new Error("Cannot find element with ID 'start-game'");
 }
 
-// Load and set background music
-const BACKGROUND_MUSIC = document.getElementById(
-  'background-music',
-)! as HTMLAudioElement;
-const MUSIC_VOLUME: number = 0.3;
-
-BACKGROUND_MUSIC.volume = MUSIC_VOLUME;
-
 START_BTN.addEventListener('click', (): void => {
   player.startMotorcycleSound();
-  BACKGROUND_MUSIC.play();
+  game.startBackgroundMusic();
 
   gameLoop({ game, player, tccEmployee, ctx });
 });

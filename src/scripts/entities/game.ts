@@ -5,7 +5,6 @@
  * Handles game objects, updating their states, collision detection, and drawing.
  */
 
-import ImageCache from '../utils/ImageCache.js';
 import type { DrawableImage } from '../types/ImageCache.js';
 import { gameConfig } from '../config.js';
 
@@ -15,11 +14,9 @@ export default class Game {
   private gameSpeed: number = gameConfig.gameSpeed;
 
   private roadImg: HTMLImageElement;
-  private roadCache: ImageCache;
   private roadSegments: DrawableImage[] = [];
   private roadImgOffset: number = 5; // this is used to remove gaps between roads
 
-  private buildingCache: ImageCache;
   private buildingSegments: DrawableImage[] = [];
   private buildingImages: (HTMLCanvasElement | HTMLImageElement)[] = [];
   private buildingsGap: number[] = gameConfig.buildingsGap;
@@ -27,7 +24,6 @@ export default class Game {
   // this is used to remove gaps between road and buildings
   private buildingsOffset: number = 35;
 
-  private treeCache: ImageCache;
   private treeSegments: DrawableImage[] = [];
   private treeImages: (HTMLCanvasElement | HTMLImageElement)[] = [];
   private treesGap: number[] = gameConfig.treesGap;
@@ -35,21 +31,19 @@ export default class Game {
   // this is used to remove gaps between road and trees
   private treeOffset: number = 35;
 
-  private cloudCache: ImageCache;
   private cloudSegments: DrawableImage[] = [];
   private cloudImages: (HTMLCanvasElement | HTMLImageElement)[] = [];
   private cloudsGap: number[] = gameConfig.cloudsGap;
 
   private healthPoints: number = gameConfig.healthPoints;
   private heartIcon: HTMLImageElement;
-  private heartIconIsLoaded: boolean = false;
+
+  private backgroundMusic: HTMLAudioElement | null = null;
+  private backgroundMusicLoudness: number = gameConfig.backgroundMusicLoudness;
 
   constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     this.canvas = canvas;
     this.ctx = ctx;
-
-    // Initialize building cache with canvas size
-    this.roadCache = new ImageCache(this.canvas.width, this.canvas.height);
 
     // Initialize road image and cache
     this.roadImg = new Image();
@@ -58,20 +52,11 @@ export default class Game {
       this.initRoadCache();
     };
 
-    // Initialize building cache with canvas size
-    this.buildingCache = new ImageCache(this.canvas.width, this.canvas.height);
-
     // Load building images asynchronously
     this.loadBuildingImages(gameConfig.buildings);
 
-    // Initialize tree cache with canvas size
-    this.treeCache = new ImageCache(this.canvas.width, this.canvas.height);
-
     // Load tree images asynchronously
     this.loadTreeImages(gameConfig.trees);
-
-    // Initialize cloud cache with canvas size
-    this.cloudCache = new ImageCache(this.canvas.width, this.canvas.height);
 
     // Load cloud images asynchronously
     this.loadCloudImages(gameConfig.clouds);
@@ -79,9 +64,33 @@ export default class Game {
     // Load heart icon
     this.heartIcon = new Image();
     this.heartIcon.src = gameConfig.heartIcon;
-    this.heartIcon.onload = (): void => {
-      this.heartIconIsLoaded = true;
-    };
+
+    // Load background music
+    this.backgroundMusic = new Audio(gameConfig.backgroundMusic);
+    this.backgroundMusic.volume = this.backgroundMusicLoudness;
+    this.backgroundMusic.loop = true;
+  }
+
+  /**
+   * Rasterizes an SVG image by drawing it onto a canvas and returning the resulting canvas.
+   * Waits for the image to load if it's not yet complete.
+   *
+   * @param img - The SVG image element to rasterize.
+   * @returns A Promise that resolves to a canvas element with the rasterized image.
+   */
+  private async rasterizeSVG(
+    img: HTMLImageElement,
+  ): Promise<HTMLCanvasElement> {
+    const canvas: HTMLCanvasElement = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx: CanvasRenderingContext2D = canvas.getContext('2d')!;
+    if (!img.complete) {
+      await new Promise((resolve) => (img.onload = resolve));
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    return canvas;
   }
 
   // Initialize road cache and road segments for scrolling
@@ -103,9 +112,6 @@ export default class Game {
         height: roadHeight,
       });
     }
-
-    this.roadCache = new ImageCache(this.canvas.width, this.canvas.height);
-    this.roadCache.updateCache(this.roadSegments);
   }
 
   // Load buildings, rasterize and store in buildingImages array
@@ -115,8 +121,7 @@ export default class Game {
       img.src = path;
 
       await new Promise((res) => (img.onload = res));
-      const rasterized: HTMLCanvasElement =
-        await this.buildingCache.rasterizeSVG(img);
+      const rasterized: HTMLCanvasElement = await this.rasterizeSVG(img);
 
       this.buildingImages.push(rasterized);
     }
@@ -129,8 +134,7 @@ export default class Game {
       img.src = path;
 
       await new Promise((res) => (img.onload = res));
-      const rasterized: HTMLCanvasElement =
-        await this.treeCache.rasterizeSVG(img);
+      const rasterized: HTMLCanvasElement = await this.rasterizeSVG(img);
       this.treeImages.push(rasterized);
     }
   }
@@ -142,8 +146,7 @@ export default class Game {
       img.src = path;
 
       await new Promise((res) => (img.onload = res));
-      const rasterized: HTMLCanvasElement =
-        await this.cloudCache.rasterizeSVG(img);
+      const rasterized: HTMLCanvasElement = await this.rasterizeSVG(img);
       this.cloudImages.push(rasterized);
     }
   }
@@ -151,11 +154,11 @@ export default class Game {
   /**
    * Updates the game state
    */
-  public update(): void {
-    this.updateRoadSegments();
-    this.updateBuildingSegments();
-    this.updateTreeSegments();
-    this.updateCloudSegments();
+  public update(deltaTime: number): void {
+    this.updateRoadSegments(deltaTime);
+    this.updateBuildingSegments(deltaTime);
+    this.updateTreeSegments(deltaTime);
+    this.updateCloudSegments(deltaTime);
 
     this.draw();
   }
@@ -169,16 +172,48 @@ export default class Game {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     // Draw clouds first (background)
-    this.cloudCache.draw(this.ctx);
+    for (const seg of this.cloudSegments) {
+      this.ctx.drawImage(
+        seg.img,
+        Math.round(seg.x),
+        Math.round(seg.y),
+        Math.round(seg.width),
+        Math.round(seg.height),
+      );
+    }
 
-    // Draw buildings on top of the road
-    this.buildingCache.draw(this.ctx);
+    // Draw buildings
+    for (const seg of this.buildingSegments) {
+      this.ctx.drawImage(
+        seg.img,
+        Math.round(seg.x),
+        Math.round(seg.y),
+        Math.round(seg.width),
+        Math.round(seg.height),
+      );
+    }
 
-    // Draw road on top of the buildings
-    this.roadCache.draw(this.ctx);
+    // Draw road
+    for (const seg of this.roadSegments) {
+      this.ctx.drawImage(
+        seg.img,
+        Math.round(seg.x),
+        Math.round(seg.y),
+        Math.round(seg.width),
+        Math.round(seg.height),
+      );
+    }
 
-    // Draw trees on top of the road
-    this.treeCache.draw(this.ctx);
+    // Draw trees
+    for (const seg of this.treeSegments) {
+      this.ctx.drawImage(
+        seg.img,
+        Math.round(seg.x),
+        Math.round(seg.y),
+        Math.round(seg.width),
+        Math.round(seg.height),
+      );
+    }
 
     // Draw health
     this.drawHealth();
@@ -206,12 +241,10 @@ export default class Game {
     const textX: number =
       x + this.heartIcon.width + gameConfig.healthPointsTextMargin;
 
-    // Set text styles
     this.ctx.font = gameConfig.healthPointsFont;
     this.ctx.fillStyle = gameConfig.healthPointsTextColor;
     this.ctx.textBaseline = 'middle';
 
-    // Draw the health points count
     this.ctx.fillText(this.healthPoints.toString(), textX, heartCenterY);
   }
 
@@ -224,9 +257,9 @@ export default class Game {
    * - Creates and stores each road segment with its initial x-position,
    *   width, and height based on the loaded road image.
    */
-  private updateRoadSegments(): void {
+  private updateRoadSegments(deltaTime: number): void {
     for (const seg of this.roadSegments) {
-      seg.x -= this.gameSpeed;
+      seg.x -= this.gameSpeed * deltaTime;
     }
 
     // Recycle road segments
@@ -246,18 +279,16 @@ export default class Game {
         });
       }
     }
-
-    this.roadCache.updateCache(this.roadSegments);
   }
 
   /**
    * Moves buildings, removes those that go off-screen, and spawns new ones.
    * @private
    */
-  private updateBuildingSegments(): void {
+  private updateBuildingSegments(deltaTime: number): void {
     // Move buildings
     for (const building of this.buildingSegments) {
-      building.x -= this.gameSpeed;
+      building.x -= this.gameSpeed * deltaTime;
     }
 
     // Remove buildings off screen
@@ -308,18 +339,16 @@ export default class Game {
 
       lastX = x + scaledWidth;
     }
-
-    this.buildingCache.updateCache(this.buildingSegments);
   }
 
   /**
    * Moves trees, removes those that go off-screen, and spawns new ones.
    * @private
    */
-  private updateTreeSegments(): void {
+  private updateTreeSegments(deltaTime: number): void {
     // Move trees
     for (const tree of this.treeSegments) {
-      tree.x -= this.gameSpeed;
+      tree.x -= this.gameSpeed * deltaTime;
     }
 
     // Remove trees off screen
@@ -369,18 +398,16 @@ export default class Game {
 
       lastX = x + scaledWidth;
     }
-
-    this.treeCache.updateCache(this.treeSegments);
   }
 
   /**
    * Moves clouds, removes those that go off-screen, and spawns new ones.
    * @private
    */
-  private updateCloudSegments(): void {
+  private updateCloudSegments(deltaTime: number): void {
     // Move clouds
     for (const cloud of this.cloudSegments) {
-      cloud.x -= gameConfig.cloudsSpeed;
+      cloud.x -= gameConfig.cloudsSpeed * deltaTime;
     }
 
     // Remove clouds off screen
@@ -429,8 +456,6 @@ export default class Game {
 
       lastX = x + scaledWidth;
     }
-
-    this.cloudCache.updateCache(this.cloudSegments);
   }
 
   public subtractHealthPoints(damageTaken: number): void {
@@ -440,6 +465,23 @@ export default class Game {
     }
 
     this.healthPoints -= damageTaken;
+  }
+
+  // Starts background music
+  public startBackgroundMusic(): void {
+    if (this.backgroundMusic && this.backgroundMusic.paused) {
+      this.backgroundMusic.play().catch((err): void => {
+        console.warn('Background music failed to play:', err);
+      });
+    }
+  }
+
+  // Stops background music
+  public stopBackgroundMusic(): void {
+    if (this.backgroundMusic && !this.backgroundMusic.paused) {
+      this.backgroundMusic.pause();
+      this.backgroundMusic.currentTime = 0;
+    }
   }
 
   getIsDead(): boolean {

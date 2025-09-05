@@ -14,6 +14,8 @@ type KeyClickState = {
   [key: string]: boolean; // Tracks keys that were just pressed this frame
 };
 
+import { USED_KEYS } from '../config.js';
+
 const keyState: KeyState = {};
 const keyClickedState: KeyClickState = {};
 
@@ -23,7 +25,12 @@ const keyClickedState: KeyClickState = {};
  */
 export function initKeyboardControls(): void {
   window.addEventListener('keydown', (e: KeyboardEvent): void => {
-    const key = e.code.toLowerCase();
+    const key: string = e.code.toLowerCase();
+
+    // Block default for game control keys
+    if (USED_KEYS.includes(key)) {
+      e.preventDefault();
+    }
 
     // If key wasn't already held, mark it as just clicked
     if (!keyState[key]) {
@@ -35,7 +42,12 @@ export function initKeyboardControls(): void {
   });
 
   window.addEventListener('keyup', (e: KeyboardEvent): void => {
-    const key = e.code.toLowerCase();
+    const key: string = e.code.toLowerCase();
+
+    // Block default for game control keys
+    if (USED_KEYS.includes(key)) {
+      e.preventDefault();
+    }
 
     // Reset both pressed and clicked states
     keyState[key] = false;
@@ -61,7 +73,7 @@ export function isKeyPressed(key: string): boolean {
  * @param key - The key to check (use 'KeyW', 'ArrowLeft', etc.)
  */
 export function isKeyClicked(key: string): boolean {
-  const lowerKey = key.toLowerCase();
+  const lowerKey: string = key.toLowerCase();
 
   if (keyClickedState[lowerKey]) {
     keyClickedState[lowerKey] = false; // Clear after reading once
