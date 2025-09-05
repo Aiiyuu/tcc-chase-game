@@ -31,6 +31,7 @@ export const gameConfig: GameConfig = {
   canvasBackground: '#F6F1E9',
 
   healthPoints: 100,
+  damage: 10,
   healthPointsFont: '40px Bangers',
   healthPointsTextColor: '#fff',
   healthPointsTextMargin: 15,
@@ -86,13 +87,27 @@ export const playerConfig: PlayerConfig = {
   motorcycleImg: 'assets/sprites/player/motorcycle.svg',
   wheelImg: 'assets/sprites/player/wheel.svg',
 
-  motorcycleSound: 'assets/sounds/motorcycle.mp3',
-  motorcycleSoundLoudness: 0.4,
+  motorcycleSound: 'assets/sounds/player/motorcycle.mp3',
+  motorcycleSoundLoudness: 0.3,
 
   jumpHeight: 12,
   gravity: 0.15,
-  jumpSound: 'assets/sounds/jump.mp3',
-  jumpSoundLoudness: 0.2,
+  jumpSound: 'assets/sounds/player/jump.mp3',
+  jumpSoundLoudness: 0.1,
+
+  soundEffects: [
+    'assets/sounds/player/sound-effect-1.mp3',
+    'assets/sounds/player/sound-effect-2.mp3',
+    'assets/sounds/player/sound-effect-3.mp3',
+    'assets/sounds/player/sound-effect-4.mp3',
+    'assets/sounds/player/sound-effect-5.mp3',
+    'assets/sounds/player/sound-effect-6.mp3',
+    'assets/sounds/player/sound-effect-7.mp3',
+    'assets/sounds/player/sound-effect-8.mp3',
+    'assets/sounds/player/sound-effect-9.mp3',
+    'assets/sounds/player/sound-effect-10.mp3',
+  ],
+  soundEffectLoudness: 1,
 };
 
 export const tccEmployerConfig: TccEmployerConfig = {
@@ -106,5 +121,11 @@ export const tccEmployerConfig: TccEmployerConfig = {
     'assets/sprites/obstacles/tcc-2.svg',
     'assets/sprites/obstacles/tcc-3.svg',
     'assets/sprites/obstacles/tcc-4.svg',
+  ],
+  graveImages: [
+    'assets/sprites/obstacles/grave-1.svg',
+    'assets/sprites/obstacles/grave-2.svg',
+    'assets/sprites/obstacles/grave-3.svg',
+    'assets/sprites/obstacles/grave-4.svg',
   ],
 };

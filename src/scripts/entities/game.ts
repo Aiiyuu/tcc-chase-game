@@ -432,4 +432,17 @@ export default class Game {
 
     this.cloudCache.updateCache(this.cloudSegments);
   }
+
+  public subtractHealthPoints(damageTaken: number): void {
+    if (this.healthPoints - damageTaken <= 0) {
+      this.healthPoints = 0;
+      return;
+    }
+
+    this.healthPoints -= damageTaken;
+  }
+
+  getIsDead(): boolean {
+    return this.healthPoints <= 0;
+  }
 }

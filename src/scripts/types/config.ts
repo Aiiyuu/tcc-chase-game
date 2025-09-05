@@ -6,6 +6,7 @@ export interface GameConfig {
   gameSpeed: number;
 
   healthPoints: number;
+  damage: number;
   healthPointsFont: string;
   healthPointsTextColor: string;
   healthPointsTextMargin: number;
@@ -52,6 +53,9 @@ export interface PlayerConfig {
   gravity: number;
   jumpSound: string;
   jumpSoundLoudness: number;
+
+  soundEffects: string[];
+  soundEffectLoudness: number;
 }
 
 export interface TccEmployerConfig {
@@ -61,6 +65,7 @@ export interface TccEmployerConfig {
     y: number;
   };
   tccEmployerImages: string[];
+  graveImages: string[];
 }
 
 export type Position = { x: number; y: number };

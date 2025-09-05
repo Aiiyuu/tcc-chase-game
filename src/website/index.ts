@@ -13,23 +13,15 @@
 function setupPlayButtonEventListener(
   playButton: HTMLButtonElement,
   gameWindow: HTMLDivElement,
-  backgroundMusic: HTMLAudioElement,
 ): void {
   playButton.addEventListener('click', (): void => {
     gameWindow.classList.add('show');
-    backgroundMusic.play();
   });
 }
 
 const PLAY_BUTTON = document.getElementById('start-game')! as HTMLButtonElement;
 const GAME_WINDOW = document.getElementById('game')! as HTMLDivElement;
-const BACKGROUND_MUSIC = document.getElementById(
-  'background-music',
-)! as HTMLAudioElement;
-
-const MUSIC_VOLUME: number = 0.6;
-BACKGROUND_MUSIC.volume = MUSIC_VOLUME;
 
 window.addEventListener('DOMContentLoaded', (): void => {
-  setupPlayButtonEventListener(PLAY_BUTTON, GAME_WINDOW, BACKGROUND_MUSIC);
+  setupPlayButtonEventListener(PLAY_BUTTON, GAME_WINDOW);
 });
