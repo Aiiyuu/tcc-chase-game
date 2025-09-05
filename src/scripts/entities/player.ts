@@ -43,6 +43,8 @@ export default class Player {
   private audioContext: AudioContext | null = null;
   private jumpBuffer: AudioBuffer | null = null;
 
+  private soundEffectBuffers: AudioBuffer[] = [];
+
   constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     this.canvas = canvas;
     this.ctx = ctx;
@@ -56,8 +58,9 @@ export default class Player {
     this.motorcycleAudio.volume = this.motorcycleSoundLoudness;
     this.motorcycleAudio.loop = true;
 
-    // Load jump sound
+    // Load player sounds
     this.loadJumpSound();
+    this.loadAllSoundEffects();
   }
 
   // Loads motorcycle and wheels images
@@ -75,6 +78,29 @@ export default class Player {
 
     this.motorcycleImage = await this.imageCache.rasterizeSVG(motorcycleImg);
     this.wheelImage = await this.imageCache.rasterizeSVG(wheelImg);
+  }
+
+  // Load sound effects
+  private async loadAllSoundEffects(): Promise<void> {
+    try {
+      const win = window as WindowWithWebkitAudioContext;
+      if (!this.audioContext) {
+        this.audioContext = new (window.AudioContext ||
+          win.webkitAudioContext)();
+      }
+
+      const bufferPromises = playerConfig.soundEffects.map(
+        async (url: string) => {
+          const response: Response = await fetch(url);
+          const arrayBuffer: ArrayBuffer = await response.arrayBuffer();
+          return await this.audioContext!.decodeAudioData(arrayBuffer);
+        },
+      );
+
+      this.soundEffectBuffers = await Promise.all(bufferPromises);
+    } catch (error) {
+      console.error('Failed to load sound effects:', error);
+    }
   }
 
   /**
@@ -218,5 +244,46 @@ export default class Player {
     gainNode.connect(this.audioContext.destination);
 
     source.start(0);
+  }
+
+  /**
+   * Play random sound effect when player is hit
+   */
+  public playRandomSound(): void {
+    // Exit if audio context isn't ready or no sound buffers loaded
+    if (!this.audioContext || this.soundEffectBuffers.length === 0) return;
+
+    // Pick a random buffer from the loaded sound effects
+    const index: number = Math.floor(
+      Math.random() * this.soundEffectBuffers.length,
+    );
+    const buffer: AudioBuffer = this.soundEffectBuffers[index]!;
+
+    // Create a buffer source and assign the selected sound
+    const source: AudioBufferSourceNode =
+      this.audioContext.createBufferSource();
+    source.buffer = buffer;
+
+    // Create a gain node to control volume
+    const gainNode: GainNode = this.audioContext.createGain();
+    gainNode.gain.value = playerConfig.soundEffectLoudness;
+
+    // Connect nodes: source → gain → output
+    source.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+
+    // Play the sound
+    source.start(0);
+  }
+
+  public getPosition(): { x: number; y: number } {
+    return { x: this.motorcycleX, y: this.motorcycleY };
+  }
+
+  public getMotorcycleSize(): { width: number; height: number } {
+    return {
+      width: this.motorcycleImage.width * playerConfig.imgScale,
+      height: this.motorcycleImage.height * playerConfig.imgScale,
+    };
   }
 }
