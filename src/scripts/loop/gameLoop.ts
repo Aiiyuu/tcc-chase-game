@@ -7,11 +7,13 @@
 
 import type { GameLoopParams } from '../types/gameLoop.js';
 import handlePlayerMovement from './handlePlayerMovement.js';
+import updateCoins from './updateCoins.js';
 import updateTccEmployee from './updateTccEmployee.js';
 import detectPlayerTccEmployeeCollision from './detectPlayerTccEmployeeCollision.js';
+import detectPlayerCoinCollision from './detectPlayerCoinCollision.js';
 
 export default function gameLoop(params: GameLoopParams): void {
-  const { ctx, game, player, tccEmployee } = params;
+  const { ctx, game, player, tccEmployee, coins } = params;
 
   let lastTime: number = performance.now();
 
@@ -25,6 +27,9 @@ export default function gameLoop(params: GameLoopParams): void {
     // Update TCC Employee' states
     updateTccEmployee(ctx, tccEmployee, deltaTime);
 
+    // Update Coins' states
+    updateCoins(ctx, coins, deltaTime);
+
     // Update player state
     player.update(deltaTime);
 
@@ -33,6 +38,9 @@ export default function gameLoop(params: GameLoopParams): void {
 
     // Detect and handle collisions between TCC Employee and player
     detectPlayerTccEmployeeCollision(game, player, tccEmployee);
+
+    // Detect and handle collisions between Coin and Player
+    detectPlayerCoinCollision(game, player, coins);
 
     // End game if player is dead
     if (!game.getIsDead()) {

@@ -19,6 +19,15 @@ export interface GameConfig {
     y: number;
   };
 
+  scoresFont: string;
+  scoresTextColor: string;
+  scoresTextMargin: number;
+  scoresScale: number;
+  scoreMargin: {
+    x: number;
+    y: number;
+  };
+
   buildingsGap: number[];
   buildingsScale: number;
   buildings: string[];
@@ -71,4 +80,15 @@ export interface TccEmployerConfig {
   graveImages: string[];
 }
 
+export interface CoinConfig {
+  coinImg: string;
+  coinSound: string;
+  coinGap: number;
+  coinGroupGap: number[];
+  coinsPerGroup: number[];
+  yPos: number[];
+  scale: number;
+}
+
 export type Position = { x: number; y: number };
+export type Size = { width: number; height: number };

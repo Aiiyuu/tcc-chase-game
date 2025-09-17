@@ -6,7 +6,8 @@
  */
 
 import type { DrawableImage } from '../types/ImageCache.js';
-import { gameConfig } from '../config.js';
+import type { Position, Size } from '../types/config.js';
+import { coinConfig, gameConfig } from '../config.js';
 
 export default class Game {
   private ctx: CanvasRenderingContext2D;
@@ -38,6 +39,10 @@ export default class Game {
   private healthPoints: number = gameConfig.healthPoints;
   private heartIcon: HTMLImageElement;
 
+  private scores: number = 0;
+  private scoreIcon: HTMLImageElement;
+  private scoresPosition: Position = { x: 0, y: 0 };
+
   private backgroundMusic: HTMLAudioElement | null = null;
   private backgroundMusicLoudness: number = gameConfig.backgroundMusicLoudness;
 
@@ -64,6 +69,21 @@ export default class Game {
     // Load heart icon
     this.heartIcon = new Image();
     this.heartIcon.src = gameConfig.heartIcon;
+
+    // Load score icon
+    this.scoreIcon = new Image();
+    this.scoreIcon.src = coinConfig.coinImg;
+    this.scoreIcon.width *= gameConfig.scoresScale;
+    this.scoreIcon.height *= gameConfig.scoresScale;
+
+    // Calculate scores position
+    this.scoresPosition.x =
+      gameConfig.canvasWidth - this.scoreIcon.width - gameConfig.scoreMargin.x;
+
+    this.scoresPosition.y =
+      gameConfig.canvasHeight -
+      this.scoreIcon.height -
+      gameConfig.heartMargin.y;
 
     // Load background music
     this.backgroundMusic = new Audio(gameConfig.backgroundMusic);
@@ -217,6 +237,9 @@ export default class Game {
 
     // Draw health
     this.drawHealth();
+
+    // Draw scores
+    this.drawScores();
   }
 
   /**
@@ -246,6 +269,35 @@ export default class Game {
     this.ctx.textBaseline = 'middle';
 
     this.ctx.fillText(this.healthPoints.toString(), textX, heartCenterY);
+  }
+
+  /**
+   * Draw score icon and scores
+   */
+  private drawScores(): void {
+    const x: number = this.scoresPosition.x;
+    const y: number = this.scoresPosition.y;
+
+    this.ctx.drawImage(
+      this.scoreIcon,
+      x,
+      y,
+      this.scoreIcon.width,
+      this.scoreIcon.height,
+    );
+
+    const scoresCenterY: number = y + this.scoreIcon.height / 2;
+
+    this.ctx.font = gameConfig.scoresFont;
+    this.ctx.fillStyle = gameConfig.scoresTextColor;
+    this.ctx.textBaseline = 'middle';
+
+    const scoreText: string = this.scores.toString();
+    const textWidth: number = this.ctx.measureText(scoreText).width;
+
+    const textX: number = x - gameConfig.scoresTextMargin - textWidth;
+
+    this.ctx.fillText(scoreText, textX, scoresCenterY);
   }
 
   /**
@@ -465,6 +517,24 @@ export default class Game {
     }
 
     this.healthPoints -= damageTaken;
+  }
+
+  public updateScores(score: number): void {
+    this.scores += score;
+  }
+
+  public getScoresPosition(): Position {
+    return {
+      x: this.scoresPosition.x + this.scoreIcon.width / 2,
+      y: this.scoresPosition.y + this.scoreIcon.height / 2,
+    };
+  }
+
+  public getScoresSize(): Size {
+    return {
+      width: this.scoreIcon.width,
+      height: this.scoreIcon.height,
+    };
   }
 
   // Starts background music

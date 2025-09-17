@@ -13,7 +13,7 @@ import gameLoop from './loop/gameLoop.js';
 const { canvas, ctx } = setupCanvas();
 
 // Initialize game, player and other elements (but don't start the game just yet)
-const { game, player, tccEmployee } = initGame(canvas, ctx);
+const { game, player, tccEmployee, coins } = initGame(canvas, ctx);
 
 // Start the game only after the user clicks the "Start Game" button
 const START_BTN = document.getElementById('start-game') as HTMLButtonElement;
@@ -26,5 +26,5 @@ START_BTN.addEventListener('click', (): void => {
   player.startMotorcycleSound();
   game.startBackgroundMusic();
 
-  gameLoop({ game, player, tccEmployee, ctx });
+  gameLoop({ game, player, tccEmployee, coins, ctx });
 });

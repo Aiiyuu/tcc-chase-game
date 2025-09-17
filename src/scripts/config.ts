@@ -9,6 +9,7 @@ import type {
   GameConfig,
   PlayerConfig,
   TccEmployerConfig,
+  CoinConfig,
 } from './types/config.js';
 
 // Get the game window object
@@ -42,6 +43,15 @@ export const gameConfig: GameConfig = {
   healthPointsTextMargin: 15,
   heartIcon: 'assets/icons/heart.svg',
   heartMargin: {
+    x: 60,
+    y: 25,
+  },
+
+  scoresFont: '40px Bangers',
+  scoresTextColor: '#fff',
+  scoresTextMargin: 15,
+  scoresScale: 0.7,
+  scoreMargin: {
     x: 60,
     y: 25,
   },
@@ -135,4 +145,14 @@ export const tccEmployerConfig: TccEmployerConfig = {
     'assets/sprites/obstacles/grave-3.png',
     'assets/sprites/obstacles/grave-4.png',
   ],
+};
+
+export const coinConfig: CoinConfig = {
+  coinImg: 'assets/sprites/player/coin.png',
+  coinSound: 'assets/sounds/coin.mp3',
+  coinGap: 100,
+  coinGroupGap: [2500, 7000],
+  coinsPerGroup: [3, 5],
+  yPos: [150, 300],
+  scale: 1,
 };
