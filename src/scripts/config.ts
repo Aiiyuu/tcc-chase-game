@@ -56,6 +56,11 @@ export const gameConfig: GameConfig = {
     y: 25,
   },
 
+  gameOverFont: '62px Bangers',
+  gameOverTextColor: '#E6A034',
+  gameOverDescriptionFont: '36px Bangers',
+  gameOverDescriptionTextColor: '#E6A034',
+
   instructionFont: '40px Bangers',
   instructionTextColor: '#fff',
   instructionMarginY: 18,

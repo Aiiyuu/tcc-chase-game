@@ -243,6 +243,12 @@ export default class Game {
 
     // Draw instruction
     this.drawInstruction();
+
+    // Draw game over
+    if (this.getIsDead()) {
+      this.drawGameOver();
+      return;
+    }
   }
 
   /**
@@ -262,6 +268,9 @@ export default class Game {
       this.heartIcon.width,
       this.heartIcon.height,
     );
+
+    // Reset text align
+    this.ctx.textAlign = 'left';
 
     const heartCenterY: number = y + this.heartIcon.height / 2;
     const textX: number =
@@ -310,18 +319,67 @@ export default class Game {
     this.ctx.font = gameConfig.instructionFont;
     this.ctx.fillStyle = gameConfig.instructionTextColor;
     this.ctx.textBaseline = 'middle';
+    this.ctx.textAlign = 'center';
 
     const instructionText: string = 'Press Space to jump';
-    const textWidth: number = this.ctx.measureText(instructionText).width;
-
     const font: string = gameConfig.instructionFont;
     const textHeight: number = font ? parseInt(font.split(' ')[0]!, 10) : 0;
-
-    const textX: number = gameConfig.canvasWidth / 2 - textWidth / 2;
     const textY: number =
       gameConfig.canvasHeight - textHeight - gameConfig.instructionMarginY;
 
-    this.ctx.fillText(instructionText, textX, textY);
+    this.ctx.fillText(instructionText, gameConfig.canvasWidth / 2, textY);
+  }
+
+  /**
+   * Draw game over message
+   */
+  private drawGameOver(): void {
+    // Draw 'Game Over' text
+    this.ctx.font = gameConfig.gameOverFont;
+    this.ctx.textBaseline = 'middle';
+    this.ctx.textAlign = 'center';
+
+    const gameOverText = 'Game Over';
+    const fontSize: number = parseInt(gameConfig.gameOverFont, 10) || 16;
+    const gameOverY: number = gameConfig.canvasHeight / 2 - fontSize;
+    const gameOverBorderThickness: number = 16;
+
+    // Set stroke (border) style
+    this.ctx.lineWidth = gameOverBorderThickness;
+    this.ctx.strokeStyle = 'black';
+    this.ctx.strokeText(gameOverText, gameConfig.canvasWidth / 2, gameOverY);
+    this.ctx.fillStyle = gameConfig.gameOverTextColor;
+    this.ctx.fillText(gameOverText, gameConfig.canvasWidth / 2, gameOverY);
+
+    // Draw description text with border
+    this.ctx.font = gameConfig.gameOverDescriptionFont;
+    this.ctx.fillStyle = gameConfig.gameOverDescriptionTextColor;
+
+    const text = `I'm too lazy to create a restart button,\nso please refresh the webpage`;
+    const lines: string[] = text.split('\n');
+
+    const descFontSize: number =
+      parseInt(gameConfig.gameOverDescriptionFont, 10) || 16;
+    const lineHeight: number = descFontSize * 1;
+    const startY: number = gameConfig.canvasHeight / 2;
+    const gameOverDescBorderThickness: number = 12;
+
+    lines.forEach((line: string, i: number): void => {
+      // Set stroke (border) style
+      this.ctx.lineWidth = gameOverDescBorderThickness;
+      this.ctx.strokeStyle = 'black';
+      this.ctx.strokeText(
+        line,
+        gameConfig.canvasWidth / 2,
+        startY + i * lineHeight,
+      );
+      this.ctx.fillStyle = gameConfig.gameOverDescriptionTextColor;
+      this.ctx.fillText(
+        line,
+        gameConfig.canvasWidth / 2,
+        startY + i * lineHeight,
+      );
+    });
   }
 
   /**
@@ -537,6 +595,7 @@ export default class Game {
   public subtractHealthPoints(damageTaken: number): void {
     if (this.healthPoints - damageTaken <= 0) {
       this.healthPoints = 0;
+
       return;
     }
 
