@@ -240,6 +240,9 @@ export default class Game {
 
     // Draw scores
     this.drawScores();
+
+    // Draw instruction
+    this.drawInstruction();
   }
 
   /**
@@ -298,6 +301,27 @@ export default class Game {
     const textX: number = x - gameConfig.scoresTextMargin - textWidth;
 
     this.ctx.fillText(scoreText, textX, scoresCenterY);
+  }
+
+  /**
+   * Draw instruction on the middle-bottom
+   */
+  private drawInstruction(): void {
+    this.ctx.font = gameConfig.instructionFont;
+    this.ctx.fillStyle = gameConfig.instructionTextColor;
+    this.ctx.textBaseline = 'middle';
+
+    const instructionText: string = 'Press Space to jump';
+    const textWidth: number = this.ctx.measureText(instructionText).width;
+
+    const font: string = gameConfig.instructionFont;
+    const textHeight: number = font ? parseInt(font.split(' ')[0]!, 10) : 0;
+
+    const textX: number = gameConfig.canvasWidth / 2 - textWidth / 2;
+    const textY: number =
+      gameConfig.canvasHeight - textHeight - gameConfig.instructionMarginY;
+
+    this.ctx.fillText(instructionText, textX, textY);
   }
 
   /**

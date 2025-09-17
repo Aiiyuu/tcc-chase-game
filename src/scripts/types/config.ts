@@ -28,6 +28,10 @@ export interface GameConfig {
     y: number;
   };
 
+  instructionFont: string;
+  instructionTextColor: string;
+  instructionMarginY: number;
+
   buildingsGap: number[];
   buildingsScale: number;
   buildings: string[];
