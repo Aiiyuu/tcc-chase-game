@@ -32,6 +32,21 @@ export const gameConfig = {
         x: 60,
         y: 25,
     },
+    scoresFont: '40px Bangers',
+    scoresTextColor: '#fff',
+    scoresTextMargin: 15,
+    scoresScale: 0.7,
+    scoreMargin: {
+        x: 60,
+        y: 25,
+    },
+    gameOverFont: '62px Bangers',
+    gameOverTextColor: '#E6A034',
+    gameOverDescriptionFont: '36px Bangers',
+    gameOverDescriptionTextColor: '#E6A034',
+    instructionFont: '40px Bangers',
+    instructionTextColor: '#fff',
+    instructionMarginY: 18,
     gameSpeed: GAME_SPEED,
     buildingsGap: [40, 150], // min, max
     buildingsScale: 1,
@@ -111,5 +126,14 @@ export const tccEmployerConfig = {
         'assets/sprites/obstacles/grave-3.png',
         'assets/sprites/obstacles/grave-4.png',
     ],
+};
+export const coinConfig = {
+    coinImg: 'assets/sprites/player/coin.png',
+    coinSound: 'assets/sounds/coin.mp3',
+    coinGap: 100,
+    coinGroupGap: [2500, 7000],
+    coinsPerGroup: [3, 5],
+    yPos: [150, 300],
+    scale: 1,
 };
 //# sourceMappingURL=config.js.map

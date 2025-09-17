@@ -10,7 +10,7 @@ import gameLoop from './loop/gameLoop.js';
 // Create canvas and get 2D drawing context
 const { canvas, ctx } = setupCanvas();
 // Initialize game, player and other elements (but don't start the game just yet)
-const { game, player, tccEmployee } = initGame(canvas, ctx);
+const { game, player, tccEmployee, coins } = initGame(canvas, ctx);
 // Start the game only after the user clicks the "Start Game" button
 const START_BTN = document.getElementById('start-game');
 if (!START_BTN) {
@@ -19,6 +19,6 @@ if (!START_BTN) {
 START_BTN.addEventListener('click', () => {
     player.startMotorcycleSound();
     game.startBackgroundMusic();
-    gameLoop({ game, player, tccEmployee, ctx });
+    gameLoop({ game, player, tccEmployee, coins, ctx });
 });
 //# sourceMappingURL=index.js.map

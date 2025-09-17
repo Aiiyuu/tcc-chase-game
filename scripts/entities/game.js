@@ -4,7 +4,7 @@
  * Core game logic and state management for the tcc chase game
  * Handles game objects, updating their states, collision detection, and drawing.
  */
-import { gameConfig } from '../config.js';
+import { coinConfig, gameConfig } from '../config.js';
 export default class Game {
     constructor(canvas, ctx) {
         this.gameSpeed = gameConfig.gameSpeed;
@@ -24,6 +24,8 @@ export default class Game {
         this.cloudImages = [];
         this.cloudsGap = gameConfig.cloudsGap;
         this.healthPoints = gameConfig.healthPoints;
+        this.scores = 0;
+        this.scoresPosition = { x: 0, y: 0 };
         this.backgroundMusic = null;
         this.backgroundMusicLoudness = gameConfig.backgroundMusicLoudness;
         this.canvas = canvas;
@@ -43,6 +45,18 @@ export default class Game {
         // Load heart icon
         this.heartIcon = new Image();
         this.heartIcon.src = gameConfig.heartIcon;
+        // Load score icon
+        this.scoreIcon = new Image();
+        this.scoreIcon.src = coinConfig.coinImg;
+        this.scoreIcon.width *= gameConfig.scoresScale;
+        this.scoreIcon.height *= gameConfig.scoresScale;
+        // Calculate scores position
+        this.scoresPosition.x =
+            gameConfig.canvasWidth - this.scoreIcon.width - gameConfig.scoreMargin.x;
+        this.scoresPosition.y =
+            gameConfig.canvasHeight -
+                this.scoreIcon.height -
+                gameConfig.heartMargin.y;
         // Load background music
         this.backgroundMusic = new Audio(gameConfig.backgroundMusic);
         this.backgroundMusic.volume = this.backgroundMusicLoudness;
@@ -149,6 +163,15 @@ export default class Game {
         }
         // Draw health
         this.drawHealth();
+        // Draw scores
+        this.drawScores();
+        // Draw instruction
+        this.drawInstruction();
+        // Draw game over
+        if (this.getIsDead()) {
+            this.drawGameOver();
+            return;
+        }
     }
     /**
      * Draw heart icons and health points
@@ -159,12 +182,80 @@ export default class Game {
             this.heartIcon.height -
             gameConfig.heartMargin.y;
         this.ctx.drawImage(this.heartIcon, x, y, this.heartIcon.width, this.heartIcon.height);
+        // Reset text align
+        this.ctx.textAlign = 'left';
         const heartCenterY = y + this.heartIcon.height / 2;
         const textX = x + this.heartIcon.width + gameConfig.healthPointsTextMargin;
         this.ctx.font = gameConfig.healthPointsFont;
         this.ctx.fillStyle = gameConfig.healthPointsTextColor;
         this.ctx.textBaseline = 'middle';
         this.ctx.fillText(this.healthPoints.toString(), textX, heartCenterY);
+    }
+    /**
+     * Draw score icon and scores
+     */
+    drawScores() {
+        const x = this.scoresPosition.x;
+        const y = this.scoresPosition.y;
+        this.ctx.drawImage(this.scoreIcon, x, y, this.scoreIcon.width, this.scoreIcon.height);
+        const scoresCenterY = y + this.scoreIcon.height / 2;
+        this.ctx.font = gameConfig.scoresFont;
+        this.ctx.fillStyle = gameConfig.scoresTextColor;
+        this.ctx.textBaseline = 'middle';
+        const scoreText = this.scores.toString();
+        const textWidth = this.ctx.measureText(scoreText).width;
+        const textX = x - gameConfig.scoresTextMargin - textWidth;
+        this.ctx.fillText(scoreText, textX, scoresCenterY);
+    }
+    /**
+     * Draw instruction on the middle-bottom
+     */
+    drawInstruction() {
+        this.ctx.font = gameConfig.instructionFont;
+        this.ctx.fillStyle = gameConfig.instructionTextColor;
+        this.ctx.textBaseline = 'middle';
+        this.ctx.textAlign = 'center';
+        const instructionText = 'Press Space to jump';
+        const font = gameConfig.instructionFont;
+        const textHeight = font ? parseInt(font.split(' ')[0], 10) : 0;
+        const textY = gameConfig.canvasHeight - textHeight - gameConfig.instructionMarginY;
+        this.ctx.fillText(instructionText, gameConfig.canvasWidth / 2, textY);
+    }
+    /**
+     * Draw game over message
+     */
+    drawGameOver() {
+        // Draw 'Game Over' text
+        this.ctx.font = gameConfig.gameOverFont;
+        this.ctx.textBaseline = 'middle';
+        this.ctx.textAlign = 'center';
+        const gameOverText = 'Game Over';
+        const fontSize = parseInt(gameConfig.gameOverFont, 10) || 16;
+        const gameOverY = gameConfig.canvasHeight / 2 - fontSize;
+        const gameOverBorderThickness = 16;
+        // Set stroke (border) style
+        this.ctx.lineWidth = gameOverBorderThickness;
+        this.ctx.strokeStyle = 'black';
+        this.ctx.strokeText(gameOverText, gameConfig.canvasWidth / 2, gameOverY);
+        this.ctx.fillStyle = gameConfig.gameOverTextColor;
+        this.ctx.fillText(gameOverText, gameConfig.canvasWidth / 2, gameOverY);
+        // Draw description text with border
+        this.ctx.font = gameConfig.gameOverDescriptionFont;
+        this.ctx.fillStyle = gameConfig.gameOverDescriptionTextColor;
+        const text = `I'm too lazy to create a restart button,\nso please refresh the webpage`;
+        const lines = text.split('\n');
+        const descFontSize = parseInt(gameConfig.gameOverDescriptionFont, 10) || 16;
+        const lineHeight = descFontSize * 1;
+        const startY = gameConfig.canvasHeight / 2;
+        const gameOverDescBorderThickness = 12;
+        lines.forEach((line, i) => {
+            // Set stroke (border) style
+            this.ctx.lineWidth = gameOverDescBorderThickness;
+            this.ctx.strokeStyle = 'black';
+            this.ctx.strokeText(line, gameConfig.canvasWidth / 2, startY + i * lineHeight);
+            this.ctx.fillStyle = gameConfig.gameOverDescriptionTextColor;
+            this.ctx.fillText(line, gameConfig.canvasWidth / 2, startY + i * lineHeight);
+        });
     }
     /**
      * Initializes the road segments that make up the scrolling road.
@@ -330,6 +421,21 @@ export default class Game {
             return;
         }
         this.healthPoints -= damageTaken;
+    }
+    updateScores(score) {
+        this.scores += score;
+    }
+    getScoresPosition() {
+        return {
+            x: this.scoresPosition.x + this.scoreIcon.width / 2,
+            y: this.scoresPosition.y + this.scoreIcon.height / 2,
+        };
+    }
+    getScoresSize() {
+        return {
+            width: this.scoreIcon.width,
+            height: this.scoreIcon.height,
+        };
     }
     // Starts background music
     startBackgroundMusic() {
