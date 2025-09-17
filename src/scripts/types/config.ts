@@ -28,6 +28,11 @@ export interface GameConfig {
     y: number;
   };
 
+  gameOverFont: string;
+  gameOverTextColor: string;
+  gameOverDescriptionFont: string;
+  gameOverDescriptionTextColor: string;
+
   instructionFont: string;
   instructionTextColor: string;
   instructionMarginY: number;

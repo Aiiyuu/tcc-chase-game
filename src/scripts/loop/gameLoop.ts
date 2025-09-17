@@ -21,6 +21,18 @@ export default function gameLoop(params: GameLoopParams): void {
     const deltaTime: number = (currentTime - lastTime) / 1000; // Convert to seconds
     lastTime = currentTime;
 
+    // End game if player is dead
+    if (game.getIsDead()) {
+      // Stop playing sounds when player is dead
+
+      // Update game state (print game over)
+      game.update(deltaTime);
+
+      game.stopBackgroundMusic();
+      player.stopMotorcycleSound();
+      return;
+    }
+
     // Update game here
     game.update(deltaTime);
 
@@ -42,15 +54,7 @@ export default function gameLoop(params: GameLoopParams): void {
     // Detect and handle collisions between Coin and Player
     detectPlayerCoinCollision(game, player, coins);
 
-    // End game if player is dead
-    if (!game.getIsDead()) {
-      requestAnimationFrame(loop);
-      return;
-    }
-
-    // Stop playing sounds when player is dead
-    game.stopBackgroundMusic();
-    player.stopMotorcycleSound();
+    requestAnimationFrame(loop);
   }
 
   // Request the next animation frame to keep the loop going
