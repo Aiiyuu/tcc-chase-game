@@ -56,6 +56,10 @@ export const gameConfig: GameConfig = {
     y: 25,
   },
 
+  instructionFont: '40px Bangers',
+  instructionTextColor: '#fff',
+  instructionMarginY: 18,
+
   gameSpeed: GAME_SPEED,
 
   buildingsGap: [40, 150], // min, max
