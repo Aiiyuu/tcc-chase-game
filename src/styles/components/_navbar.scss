@@ -1,0 +1,43 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+
+    @include container-dimensions;
+
+    &__logo {
+        color: $base-dark-color;
+        font-size: $base-title-size;
+        font-weight: bold;
+        transition: color $base-transition-time ease;
+
+        &:hover {
+            color: $base-light-color;
+        }
+    }
+
+    &__list {
+        display: flex;
+        gap: 25px;
+    }
+
+    &__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            fill: $base-dark-color;
+            transition: fill $base-transition-time ease;
+        }
+
+        &:hover svg {
+            fill: $base-light-color;
+        }
+    }
+
+}
