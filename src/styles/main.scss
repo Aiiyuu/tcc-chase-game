@@ -1,7 +1,7 @@
 @use './utils/variables' as *;
 @use './utils/mixins' as *;
-
 @use './components/game';
+@use './components/header';
 @use './components/navbar';
 
 * {
@@ -21,7 +21,11 @@ ul, li {
 body {
     margin: 0;
     padding: 0;
-
     font-family: $base-font;
     color: $base-light-color;
+}
+
+.fixed {
+    position: sticky;
+    top: 0;
 }
