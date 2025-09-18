@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bangers&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bangers&family=Outfit:wght@100..900&display=swap"
       rel="stylesheet"
     />
 
@@ -18,11 +18,111 @@
   </head>
   <!-- #endregion -->
   <body>
-    <h1>Стрибати на пробіл</h1>
-    <button id="start-game">start game</button>
+    <header class="header">
+      <nav class="navbar">
+        <a class="navbar__logo" href="/">TCCEscape</a>
 
-    <div id="game"></div>
+        <ul class="navbar__list">
+          <li class="navbar__item">
+            <a
+              class="navbar__link"
+              target="_blank"
+              href="https://github.com/Aiiyuu"
+            >
+              <span class="navbar__icon">
+                <svg
+                  width="30"
+                  height="31"
+                  viewBox="0 0 30 31"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.998 3.5C8.37105 3.5 2.99805 8.873 2.99805 15.5C2.99805 21.123 6.87005 25.828 12.09 27.13C12.034 26.968 11.998 26.78 11.998 26.547V24.496C11.511 24.496 10.695 24.496 10.49 24.496C9.66905 24.496 8.93905 24.143 8.58505 23.487C8.19205 22.758 8.12405 21.643 7.15005 20.961C6.86105 20.734 7.08105 20.475 7.41405 20.51C8.02905 20.684 8.53905 21.106 9.01905 21.732C9.49705 22.359 9.72205 22.501 10.615 22.501C11.048 22.501 11.696 22.476 12.306 22.38C12.634 21.547 13.201 20.78 13.894 20.418C9.89805 20.007 7.99105 18.019 7.99105 15.32C7.99105 14.158 8.48605 13.034 9.32705 12.087C9.05105 11.147 8.70405 9.23 9.43305 8.5C11.231 8.5 12.318 9.666 12.579 9.981C13.475 9.674 14.459 9.5 15.493 9.5C16.529 9.5 17.517 9.674 18.415 9.983C18.673 9.67 19.761 8.5 21.563 8.5C22.295 9.231 21.944 11.156 21.665 12.094C22.501 13.039 22.993 14.16 22.993 15.32C22.993 18.017 21.089 20.004 17.099 20.417C18.197 20.99 18.998 22.6 18.998 23.813V26.547C18.998 26.651 18.975 26.726 18.963 26.815C23.639 25.176 26.998 20.736 26.998 15.5C26.998 8.873 21.625 3.5 14.998 3.5Z"
+                  />
+                </svg>
+              </span>
+            </a>
+          </li>
+          <li class="navbar__item">
+            <a
+              class="navbar__link"
+              target="_blank"
+              href="https://www.linkedin.com/in/nazariy-holovach-a64ab632a/"
+            >
+              <span class="navbar__icon">
+                <svg
+                  width="30"
+                  height="31"
+                  viewBox="0 0 30 31"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M24 4.5H6C4.895 4.5 4 5.395 4 6.5V24.5C4 25.605 4.895 26.5 6 26.5H24C25.105 26.5 26 25.605 26 24.5V6.5C26 5.395 25.105 4.5 24 4.5ZM10.954 22.5H8.004V13.008H10.954V22.5ZM9.449 11.651C8.498 11.651 7.729 10.88 7.729 9.931C7.729 8.982 8.499 8.212 9.449 8.212C10.397 8.212 11.168 8.983 11.168 9.931C11.168 10.88 10.397 11.651 9.449 11.651ZM22.004 22.5H19.056V17.884C19.056 16.783 19.036 15.367 17.523 15.367C15.988 15.367 15.752 16.566 15.752 17.804V22.5H12.804V13.008H15.634V14.305H15.674C16.068 13.559 17.03 12.772 18.465 12.772C21.452 12.772 22.004 14.738 22.004 17.294V22.5Z"
+                  />
+                </svg>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </nav>
 
+      <div class="header__sun"></div>
+      <div class="header__tree header__tree--1"></div>
+      <div class="header__tree header__tree--2"></div>
+      <div class="header__grass"></div>
+      <div class="header__road"></div>
+      <div class="header__motorcycle"></div>
+      <div class="header__motorcycle-dust"></div>
+      <div class="header__mouse">
+        <svg
+          width="36"
+          height="37"
+          viewBox="0 0 36 37"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="mouse" clip-path="url(#clip0_101_148)">
+            <rect
+              id="mouse2"
+              x="16.8777"
+              y="6.85474"
+              width="2.23413"
+              height="6.78271"
+              rx="1"
+              fill="#FFE6E1"
+            />
+            <rect
+              id="mouse-scroll"
+              x="7.9"
+              y="1.28135"
+              width="20.2"
+              height="33.7"
+              rx="10.1"
+              stroke="#FFE6E1"
+              stroke-width="2.3"
+            />
+          </g>
+          <defs>
+            <clipPath id="clip0_101_148">
+              <rect
+                width="36"
+                height="36"
+                fill="white"
+                transform="translate(0 0.131348)"
+              />
+            </clipPath>
+          </defs>
+        </svg>
+      </div>
+    </header>
+
+    <main style="height: 100vh">
+      <h1>Стрибати на пробіл</h1>
+      <button id="start-game">start game</button>
+      <div id="game"></div>
+    </main>
     <script type="module" src="./scripts/index.js"></script>
     <script type="module" src="./website/index.js"></script>
   </body>

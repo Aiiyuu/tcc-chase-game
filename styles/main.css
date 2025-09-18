@@ -11,7 +11,389 @@
   visibility: visible;
 }
 
+.header {
+  overflow: hidden;
+  position: relative;
+  height: 100vh;
+  background: linear-gradient(to top, #FFE0B2 0%, #FFB74D 50%, #FF8A50 100%);
+}
+.header__sun {
+  position: absolute;
+  top: 50%;
+  right: 12%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: linear-gradient(to top, #FFF 0%, #FFF9C4 40%, #FFE066 100%);
+  animation: popup 300ms cubic-bezier(0.68, -0.55, 0.27, 1.35) 350ms;
+  animation-fill-mode: forwards;
+  transform: translateY(100%);
+}
+@media (min-width: 744px) {
+  .header__sun {
+    top: 20%;
+    right: 8%;
+    width: 600px;
+    height: 600px;
+  }
+}
+@media (min-width: 1260px) {
+  .header__sun {
+    top: 20%;
+    right: 15%;
+    width: 700px;
+    height: 700px;
+  }
+}
+.header__grass {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  width: 100%;
+  background-image: url("../assets/images/grass.svg");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  animation: popup 300ms cubic-bezier(0.68, -0.55, 0.27, 1.35) 250ms;
+  animation-fill-mode: forwards;
+  transform: translateY(100%);
+}
+@media (min-width: 744px) {
+  .header__grass {
+    height: 270px;
+  }
+}
+.header__road {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  width: 100%;
+  background-image: url("../assets/images/road.svg");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  animation: popup 300ms ease 150ms;
+  animation-fill-mode: forwards;
+  transform: translateY(100%);
+}
+@media (min-width: 744px) {
+  .header__road {
+    height: 150px;
+  }
+}
+.header__tree {
+  position: absolute;
+  bottom: 80px;
+  background-image: url("../assets/images/tree.svg");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: contain;
+}
+@media (min-width: 744px) {
+  .header__tree {
+    bottom: 150px;
+  }
+}
+.header__tree--1 {
+  right: 3%;
+  width: 240px;
+  height: 210px;
+  animation: slide-to-left 420ms cubic-bezier(0.68, -0.55, 0.27, 1.35) 200ms;
+  animation-fill-mode: forwards;
+  transform: translateX(100vw);
+}
+@media (min-width: 744px) {
+  .header__tree--1 {
+    right: 3%;
+    width: 380px;
+    height: 315px;
+  }
+}
+@media (min-width: 1260px) {
+  .header__tree--1 {
+    right: 5%;
+    width: 507px;
+    height: 370px;
+  }
+}
+.header__tree--2 {
+  left: -2%;
+  width: 180px;
+  height: 132px;
+  animation: slide-to-right 420ms cubic-bezier(0.68, -0.55, 0.27, 1.35) 340ms;
+  animation-fill-mode: forwards;
+  transform: translateX(-100vw);
+}
+@media (min-width: 744px) {
+  .header__tree--2 {
+    left: -2%;
+    width: 300px;
+    height: 216px;
+  }
+}
+@media (min-width: 1260px) {
+  .header__tree--2 {
+    left: -2%;
+    width: 380px;
+    height: 276px;
+  }
+}
+.header__motorcycle {
+  position: absolute;
+  left: 0;
+  bottom: 70px;
+  width: 300px;
+  height: 150px;
+  background-image: url("../assets/images/motorcycle.png");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: contain;
+  transition: left 10ms linear;
+  animation: ride 2400ms ease 340ms, motorcycle-vibration 600ms cubic-bezier(0.68, -0.55, 0.27, 1.35) 340ms infinite;
+  animation-fill-mode: forwards;
+  transform: translateX(-100vw);
+}
+@media (min-width: 744px) {
+  .header__motorcycle {
+    bottom: 56px;
+    width: 490px;
+    height: 350px;
+  }
+}
+@media (min-width: 1260px) {
+  .header__motorcycle {
+    bottom: 40px;
+    width: 540px;
+    height: 390px;
+  }
+}
+.header__motorcycle-dust {
+  position: absolute;
+  left: 0;
+  bottom: 59px;
+  width: 90px;
+  height: 60px;
+  background-image: url("../assets/images/dust-1.svg");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: contain;
+  transition: left 10ms linear;
+  animation: ride 2400ms ease 340ms, dust 1500ms ease 340ms infinite;
+  animation-fill-mode: forwards;
+  transform: translateX(-100vw);
+}
+@media (min-width: 744px) {
+  .header__motorcycle-dust {
+    bottom: 86px;
+    width: 192px;
+    height: 120px;
+  }
+}
+@media (min-width: 1260px) {
+  .header__motorcycle-dust {
+    bottom: 72px;
+    width: 222px;
+    height: 170px;
+  }
+}
+.header__mouse {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translate(-50%, 100px);
+  animation: slide-mouse 900ms cubic-bezier(0.68, -0.55, 0.27, 1.35) 1800ms;
+  animation-fill-mode: forwards;
+}
+.header__mouse #mouse2 {
+  animation: slide-mouse-scroll 900ms cubic-bezier(0.68, -0.55, 0.27, 1.35);
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-delay: 1800ms;
+}
+
+@keyframes popup {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes slide-to-left {
+  from {
+    opacity: 0;
+    transform: translateX(100vw);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slide-to-right {
+  from {
+    opacity: 0;
+    transform: translateX(-100vw);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes ride {
+  from {
+    transform: translateX(-100vw);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes motorcycle-vibration {
+  0% {
+    translate: 0 0;
+  }
+  10% {
+    translate: 1px -1.5px;
+  }
+  20% {
+    translate: -1px 1.5px;
+  }
+  30% {
+    translate: 1px -1.5px;
+  }
+  40% {
+    translate: -1px 1.5px;
+  }
+  50% {
+    translate: 1px -1.5px;
+  }
+  60% {
+    translate: -1px 1.5px;
+  }
+  70% {
+    translate: 1px -1.5px;
+  }
+  80% {
+    translate: -1px 1.5px;
+  }
+  90% {
+    translate: 1px -1.5px;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+@keyframes dust {
+  0% {
+    background-image: url("../assets/images/dust-1.svg");
+  }
+  20% {
+    background-image: url("../assets/images/dust-2.svg");
+  }
+  40% {
+    background-image: url("../assets/images/dust-3.svg");
+  }
+  60% {
+    background-image: url("../assets/images/dust-4.svg");
+  }
+  80% {
+    background-image: url("../assets/images/dust-5.svg");
+  }
+  100% {
+    background-image: url("../assets/images/dust-6.svg");
+  }
+}
+@keyframes slide-mouse {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 100px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+@keyframes slide-mouse-scroll {
+  from {
+    transform: translateY(13.74px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  max-width: 1260px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+@media (min-width: 744px) {
+  .navbar {
+    padding-inline: 60px;
+  }
+}
+@media (min-width: 1260px) {
+  .navbar {
+    padding-inline: 0;
+  }
+}
+.navbar__logo {
+  color: #4F200D;
+  font-size: 24px;
+  font-weight: bold;
+  transition: color 300ms ease;
+}
+.navbar__logo:hover {
+  color: #FFE6E1;
+}
+.navbar__list {
+  display: flex;
+  gap: 25px;
+}
+.navbar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.navbar__icon svg {
+  fill: #4F200D;
+  transition: fill 300ms ease;
+}
+.navbar__icon:hover svg {
+  fill: #FFE6E1;
+}
+
 * {
   box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Outfit", sans-serif;
+  color: #FFE6E1;
+}
+
+.fixed {
+  position: sticky;
+  top: 0;
 }
 /*# sourceMappingURL=main.css.map */
