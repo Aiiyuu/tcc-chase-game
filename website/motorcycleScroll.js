@@ -1,5 +1,5 @@
 /**
- * motorcycle-scroll.ts
+ * motorcycleScroll.ts
  *
  * This file is responsible for motorcycle scroll animation which is
  * not considered part of the game.
@@ -39,4 +39,4 @@ export function throttledMotorcycleScroll({ motorcycle, dust, scrollPosition, ma
         });
     }, throttling_time)();
 }
-//# sourceMappingURL=motorcycle-scroll.js.map
+//# sourceMappingURL=motorcycleScroll.js.map

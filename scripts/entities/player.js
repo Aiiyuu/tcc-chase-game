@@ -5,21 +5,16 @@
  * Handles a player object, updating its states, collision detection, and drawing.
  */
 import ImageCache from '../utils/ImageCache.js';
-import { gameConfig, playerConfig } from '../config.js';
+import { gameConfig, motorcycles, playerConfig } from '../config.js';
 export default class Player {
     constructor(canvas, ctx) {
         this.gameSpeed = gameConfig.gameSpeed;
+        this.selectedMotorcycle = 0;
         this.wheelRotation = 0;
-        this.motorcycleX = playerConfig.motorcyclePosition.x;
-        this.motorcycleY = playerConfig.motorcyclePosition.y;
-        this.wheelX = playerConfig.wheelsPosition.x;
-        this.wheelY = playerConfig.wheelsPosition.y;
         // Jumping physics
         this.isJumping = false;
         this.jumpVelocity = 0;
         this.gravity = playerConfig.gravity;
-        this.initialMotorcycleY = playerConfig.motorcyclePosition.y;
-        this.initialWheelY = playerConfig.wheelsPosition.y[0];
         this.jumpHeight = playerConfig.jumpHeight;
         this.motorcycleAudio = null;
         this.motorcycleSoundLoudness = playerConfig.motorcycleSoundLoudness;
@@ -29,6 +24,17 @@ export default class Player {
         this.canvas = canvas;
         this.ctx = ctx;
         this.imageCache = new ImageCache(canvas.width, canvas.height);
+        // Pick motorcycle
+        this.selectedMotorcycle = localStorage.getItem('selected-motorcycle')
+            ? Number(localStorage.getItem('selected-motorcycle'))
+            : 0;
+        this.motorcycle = motorcycles[this.selectedMotorcycle];
+        this.motorcycleX = this.motorcycle.motorcyclePosition.x;
+        this.motorcycleY = this.motorcycle.motorcyclePosition.y;
+        this.wheelX = this.motorcycle.wheelsPosition.x;
+        this.wheelY = this.motorcycle.wheelsPosition.y;
+        this.initialMotorcycleY = this.motorcycle.motorcyclePosition.y;
+        this.initialWheelY = this.motorcycle.wheelsPosition.y[0];
         this.loadImages();
         // Load motorcycle sound
         this.motorcycleAudio = new Audio(playerConfig.motorcycleSound);
@@ -42,8 +48,8 @@ export default class Player {
     async loadImages() {
         const motorcycleImg = new Image();
         const wheelImg = new Image();
-        motorcycleImg.src = playerConfig.motorcycleImg;
-        wheelImg.src = playerConfig.wheelImg;
+        motorcycleImg.src = this.motorcycle.motorcycleImg;
+        wheelImg.src = this.motorcycle.wheelImg;
         await Promise.all([
             new Promise((res) => (motorcycleImg.onload = res)),
             new Promise((res) => (wheelImg.onload = res)),

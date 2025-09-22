@@ -24,7 +24,9 @@ export default class Game {
         this.cloudImages = [];
         this.cloudsGap = gameConfig.cloudsGap;
         this.healthPoints = gameConfig.healthPoints;
-        this.scores = 0;
+        this.scores = localStorage.getItem('bank')
+            ? Number(localStorage.getItem('bank'))
+            : 0;
         this.scoresPosition = { x: 0, y: 0 };
         this.backgroundMusic = null;
         this.backgroundMusicLoudness = gameConfig.backgroundMusicLoudness;
@@ -451,6 +453,10 @@ export default class Game {
             this.backgroundMusic.pause();
             this.backgroundMusic.currentTime = 0;
         }
+    }
+    // Updates bank
+    updateScoresStorage() {
+        localStorage.setItem('bank', `${this.scores}`);
     }
     getIsDead() {
         return this.healthPoints <= 0;

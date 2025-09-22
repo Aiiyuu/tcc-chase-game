@@ -1,6 +1,6 @@
 #game {
   position: fixed;
-  z-index: 1;
+  z-index: 100;
   top: 0;
   left: 0;
   visibility: hidden;
@@ -11,9 +11,129 @@
   visibility: visible;
 }
 
+@keyframes popup {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+@keyframes slide-to-left {
+  from {
+    opacity: 0;
+    transform: translateX(100vw);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes slide-to-right {
+  from {
+    opacity: 0;
+    transform: translateX(-100vw);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes ride {
+  from {
+    transform: translateX(-100vw);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes motorcycle-vibration {
+  0% {
+    translate: 0 0;
+  }
+  10% {
+    translate: 1px -1.5px;
+  }
+  20% {
+    translate: -1px 1.5px;
+  }
+  30% {
+    translate: 1px -1.5px;
+  }
+  40% {
+    translate: -1px 1.5px;
+  }
+  50% {
+    translate: 1px -1.5px;
+  }
+  60% {
+    translate: -1px 1.5px;
+  }
+  70% {
+    translate: 1px -1.5px;
+  }
+  80% {
+    translate: -1px 1.5px;
+  }
+  90% {
+    translate: 1px -1.5px;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+@keyframes dust {
+  0% {
+    background-image: url("../assets/images/dust-1.svg");
+  }
+  20% {
+    background-image: url("../assets/images/dust-2.svg");
+  }
+  40% {
+    background-image: url("../assets/images/dust-3.svg");
+  }
+  60% {
+    background-image: url("../assets/images/dust-4.svg");
+  }
+  80% {
+    background-image: url("../assets/images/dust-5.svg");
+  }
+  100% {
+    background-image: url("../assets/images/dust-6.svg");
+  }
+}
+@keyframes slide-mouse {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 100px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+@keyframes slide-mouse-scroll {
+  from {
+    transform: translateY(13.74px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 .header {
   overflow: hidden;
   position: relative;
+  z-index: 9;
   height: 100vh;
   background: linear-gradient(to top, #FFE0B2 0%, #FFB74D 50%, #FF8A50 100%);
 }
@@ -200,132 +320,7 @@
     height: 170px;
   }
 }
-.header__mouse {
-  position: absolute;
-  left: 50%;
-  bottom: 10px;
-  transform: translate(-50%, 100px);
-  animation: slide-mouse 900ms cubic-bezier(0.68, -0.55, 0.27, 1.35) 1800ms;
-  animation-fill-mode: forwards;
-}
-.header__mouse #mouse2 {
-  animation: slide-mouse-scroll 900ms cubic-bezier(0.68, -0.55, 0.27, 1.35);
-  animation-direction: alternate;
-  animation-iteration-count: infinite;
-  animation-delay: 1800ms;
-}
 
-@keyframes popup {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0%);
-    opacity: 1;
-  }
-}
-@keyframes slide-to-left {
-  from {
-    opacity: 0;
-    transform: translateX(100vw);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-@keyframes slide-to-right {
-  from {
-    opacity: 0;
-    transform: translateX(-100vw);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-@keyframes ride {
-  from {
-    transform: translateX(-100vw);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-@keyframes motorcycle-vibration {
-  0% {
-    translate: 0 0;
-  }
-  10% {
-    translate: 1px -1.5px;
-  }
-  20% {
-    translate: -1px 1.5px;
-  }
-  30% {
-    translate: 1px -1.5px;
-  }
-  40% {
-    translate: -1px 1.5px;
-  }
-  50% {
-    translate: 1px -1.5px;
-  }
-  60% {
-    translate: -1px 1.5px;
-  }
-  70% {
-    translate: 1px -1.5px;
-  }
-  80% {
-    translate: -1px 1.5px;
-  }
-  90% {
-    translate: 1px -1.5px;
-  }
-  100% {
-    translate: 0 0;
-  }
-}
-@keyframes dust {
-  0% {
-    background-image: url("../assets/images/dust-1.svg");
-  }
-  20% {
-    background-image: url("../assets/images/dust-2.svg");
-  }
-  40% {
-    background-image: url("../assets/images/dust-3.svg");
-  }
-  60% {
-    background-image: url("../assets/images/dust-4.svg");
-  }
-  80% {
-    background-image: url("../assets/images/dust-5.svg");
-  }
-  100% {
-    background-image: url("../assets/images/dust-6.svg");
-  }
-}
-@keyframes slide-mouse {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 100px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
-  }
-}
-@keyframes slide-mouse-scroll {
-  from {
-    transform: translateY(13.74px);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
 .navbar {
   display: flex;
   align-items: center;
@@ -371,6 +366,260 @@
   fill: #FFE6E1;
 }
 
+.ribbons {
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  pointer-events: none;
+}
+.ribbons__item {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 20%;
+  left: 0;
+  background: #4F200D;
+}
+.ribbons--active .ribbons__item:nth-child(1) {
+  top: 0%;
+  animation: ribbon 2400ms linear forwards;
+  animation-delay: 0ms;
+}
+.ribbons--active .ribbons__item:nth-child(2) {
+  top: 20%;
+  animation: ribbon 2400ms linear forwards;
+  animation-delay: 300ms;
+}
+.ribbons--active .ribbons__item:nth-child(3) {
+  top: 40%;
+  animation: ribbon 2400ms linear forwards;
+  animation-delay: 600ms;
+}
+.ribbons--active .ribbons__item:nth-child(4) {
+  top: 60%;
+  animation: ribbon 2400ms linear forwards;
+  animation-delay: 900ms;
+}
+.ribbons--active .ribbons__item:nth-child(5) {
+  top: 80%;
+  animation: ribbon 2400ms linear forwards;
+  animation-delay: 1200ms;
+}
+
+@keyframes ribbon {
+  0% {
+    width: 0;
+  }
+  50% {
+    width: 200%;
+  }
+  100% {
+    left: auto;
+    right: 0;
+    width: 0;
+  }
+}
+.shop {
+  overflow: hidden;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../assets/images/bg.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  --road-height: 200px;
+}
+.shop__road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--road-height);
+  background-image: url("../assets/images/stone-road.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.shop__junk {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -100%;
+  opacity: 0;
+}
+.shop__tentacles {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: left 300ms ease;
+}
+.shop__tentacles-car {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 90%);
+  transition: transform 2400ms ease, left 300ms ease;
+}
+.shop__tentacles-car--collapsed {
+  transform: translate(-50%, 100vh);
+}
+.shop__navigation-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100vw;
+  height: 100vh;
+}
+.shop__price {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-inline: 20px;
+  margin: 14px 0;
+}
+.shop__price span {
+  font-size: 26px;
+  font-weight: bold;
+}
+.shop__price img {
+  transform: scale(0.8);
+}
+.shop__navigation {
+  position: relative;
+  width: 100%;
+  max-width: 1260px;
+  margin: 14px auto;
+}
+.shop__navigation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-inline: 20px;
+}
+@media (min-width: 744px) {
+  .shop__navigation-list {
+    flex-direction: row;
+  }
+}
+.shop__navigation-item {
+  width: 100%;
+  transform: translateY(50vh);
+  opacity: 0;
+  transition: transform 1200ms cubic-bezier(0.68, -0.55, 0.27, 1.35), opacity 300ms 300ms;
+}
+.shop__navigation-item:first-child {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  opacity: 1;
+}
+.shop__navigation-item:nth-child(2), .shop__navigation-item:last-child {
+  display: flex;
+  justify-content: flex-end;
+  opacity: 1;
+}
+.shop__coin-icon {
+  width: 80px;
+  height: 80px;
+}
+.shop__coin-counter {
+  font-size: 36px;
+  font-weight: bold;
+}
+.shop__motorcycle {
+  position: absolute;
+  top: -40px;
+  transform: translateX(-50%);
+  animation: motorcycle-vibration 600ms cubic-bezier(0.68, -0.55, 0.27, 1.35) 340ms infinite;
+}
+.shop__motorcycle-dust {
+  position: absolute;
+  width: 222px;
+  height: 170px;
+  transform: translate(-60%, -23%);
+  background-image: url("../assets/images/dust-1.svg");
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: contain;
+  transition: left 10ms linear;
+  animation: dust 1500ms ease 340ms infinite;
+  animation-fill-mode: forwards;
+}
+.shop__motorcycle-wheel-obj:first-child {
+  animation: rotate 1500ms linear infinite;
+}
+.shop.show .shop__junk {
+  transition: bottom 600ms ease, opacity 600ms ease;
+  bottom: calc(var(--road-height) - 10px);
+  opacity: 0.9;
+}
+.shop.show .shop__tentacles {
+  transition: left 300ms ease, opacity 600ms ease;
+  left: 50%;
+  opacity: 1;
+}
+.shop.show .shop__navigation-item {
+  transform: translateY(0);
+}
+
+.button {
+  text-transform: capitalize;
+  color: #FFE6E1;
+  width: 100%;
+  height: 70px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 24px;
+  cursor: pointer;
+  transition: background-color 300ms ease;
+}
+.button--start-game {
+  background-color: #4B2526;
+}
+.button--start-game:hover {
+  background-color: #C1856D;
+}
+.button--purchase {
+  background-color: #FCB53B;
+}
+.button--purchase:hover {
+  background-color: #EF7722;
+}
+@media (min-width: 744px) {
+  .button {
+    width: 310px;
+  }
+}
+
+.mouse {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  bottom: 10px;
+  transform: translate(-50%, 100px);
+  animation: slide-mouse 900ms cubic-bezier(0.68, -0.55, 0.27, 1.35) 1800ms;
+  animation-fill-mode: forwards;
+}
+.mouse #mouse2 {
+  animation: slide-mouse-scroll 900ms cubic-bezier(0.68, -0.55, 0.27, 1.35);
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-delay: 1800ms;
+}
+@media (min-width: 744px) {
+  .mouse {
+    display: block;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -385,15 +634,27 @@ ul, li {
   padding: 0;
 }
 
+button {
+  border: none;
+  background: none;
+}
+
 body {
+  max-width: 100vw;
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
   font-family: "Outfit", sans-serif;
   color: #FFE6E1;
+  height: 200vh;
 }
 
 .fixed {
   position: sticky;
   top: 0;
+}
+
+.hidden {
+  display: none !important;
 }
 /*# sourceMappingURL=main.css.map */
