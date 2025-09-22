@@ -6,7 +6,8 @@
  */
 
 import ImageCache from '../utils/ImageCache.js';
-import { gameConfig, playerConfig } from '../config.js';
+import { gameConfig, motorcycles, playerConfig } from '../config.js';
+import type { Motorcycle } from '../types/config.js';
 
 interface WindowWithWebkitAudioContext extends Window {
   webkitAudioContext?: typeof AudioContext;
@@ -17,23 +18,25 @@ export default class Player {
   private canvas: HTMLCanvasElement;
   private gameSpeed: number = gameConfig.gameSpeed;
 
+  private selectedMotorcycle: number = 0;
+  private motorcycle: Motorcycle;
+
   private motorcycleImage!: HTMLCanvasElement;
   private wheelImage!: HTMLCanvasElement;
   private imageCache: ImageCache;
   private wheelRotation: number = 0;
 
-  private motorcycleX: number = playerConfig.motorcyclePosition.x;
-  private motorcycleY: number = playerConfig.motorcyclePosition.y;
-
-  private wheelX: number[] = playerConfig.wheelsPosition.x;
-  private wheelY: number[] = playerConfig.wheelsPosition.y;
+  private motorcycleX: number;
+  private motorcycleY: number;
+  private wheelX: number[];
+  private wheelY: number[];
 
   // Jumping physics
   private isJumping: boolean = false;
   private jumpVelocity: number = 0;
   private gravity: number = playerConfig.gravity;
-  private initialMotorcycleY: number = playerConfig.motorcyclePosition.y;
-  private initialWheelY: number = playerConfig.wheelsPosition.y[0]!;
+  private initialMotorcycleY: number;
+  private initialWheelY: number;
   private jumpHeight: number = playerConfig.jumpHeight;
 
   private motorcycleAudio: HTMLAudioElement | null = null;
@@ -50,6 +53,19 @@ export default class Player {
     this.ctx = ctx;
 
     this.imageCache = new ImageCache(canvas.width, canvas.height);
+
+    // Pick motorcycle
+    this.selectedMotorcycle = localStorage.getItem('selected-motorcycle')
+      ? Number(localStorage.getItem('selected-motorcycle'))
+      : 0;
+
+    this.motorcycle = motorcycles[this.selectedMotorcycle]!;
+    this.motorcycleX = this.motorcycle.motorcyclePosition.x;
+    this.motorcycleY = this.motorcycle.motorcyclePosition.y;
+    this.wheelX = this.motorcycle.wheelsPosition.x;
+    this.wheelY = this.motorcycle.wheelsPosition.y;
+    this.initialMotorcycleY = this.motorcycle.motorcyclePosition.y;
+    this.initialWheelY = this.motorcycle.wheelsPosition.y[0]!;
 
     this.loadImages();
 
@@ -68,8 +84,8 @@ export default class Player {
     const motorcycleImg = new Image();
     const wheelImg = new Image();
 
-    motorcycleImg.src = playerConfig.motorcycleImg;
-    wheelImg.src = playerConfig.wheelImg;
+    motorcycleImg.src = this.motorcycle.motorcycleImg;
+    wheelImg.src = this.motorcycle.wheelImg;
 
     await Promise.all([
       new Promise((res) => (motorcycleImg.onload = res)),

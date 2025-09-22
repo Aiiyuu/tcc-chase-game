@@ -37,6 +37,7 @@ export default function detectPlayerCoinCollision(
       coin.isTaken = true;
       coin.playCoinSound();
       game.updateScores(1);
+      game.updateScoresStorage();
       coin.setTarget(scoresPosition, scoresSize);
     }
   }

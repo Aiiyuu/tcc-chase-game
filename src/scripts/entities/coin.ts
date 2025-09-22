@@ -78,7 +78,13 @@ export default class Coin {
     const source: AudioBufferSourceNode =
       this.audioContext.createBufferSource();
     source.buffer = this.coinSoundBuffer;
-    source.connect(this.audioContext.destination);
+
+    const gainNode: GainNode = this.audioContext.createGain();
+    gainNode.gain.value = coinConfig.coinSoundLoudness;
+
+    source.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+
     source.start(0);
   }
 

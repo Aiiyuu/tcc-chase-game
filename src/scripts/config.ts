@@ -10,6 +10,7 @@ import type {
   PlayerConfig,
   TccEmployerConfig,
   CoinConfig,
+  Motorcycle,
 } from './types/config.js';
 
 // Get the game window object
@@ -21,10 +22,6 @@ if (!gameWindow) {
 }
 
 const GAME_SPEED: number = 1000; // pixels per seconds
-const MOTORCYCLE_COORDINATES = {
-  x: 80,
-  y: gameWindow.offsetHeight - 390,
-};
 
 export const USED_KEYS: string[] = ['space'];
 
@@ -102,16 +99,76 @@ export const gameConfig: GameConfig = {
   road: 'assets/sprites/background-objects/road/road.png',
 };
 
-export const playerConfig: PlayerConfig = {
-  motorcyclePosition: MOTORCYCLE_COORDINATES,
-  wheelsPosition: {
-    x: [MOTORCYCLE_COORDINATES.x + 25.42, MOTORCYCLE_COORDINATES.x + 237.73],
-    y: [MOTORCYCLE_COORDINATES.y + 161.5, MOTORCYCLE_COORDINATES.y + 161.5],
+export const motorcycles: Motorcycle[] = [
+  {
+    motorcyclePosition: { x: 80, y: gameWindow.offsetHeight - 390 },
+    wheelsPosition: {
+      x: [80 + 25.42, 80 + 237.73],
+      y: [
+        gameWindow.offsetHeight - 390 + 161.5,
+        gameWindow.offsetHeight - 390 + 161.5,
+      ],
+    },
+    motorcycleImg: 'assets/sprites/player/motorcycle-1.png',
+    wheelImg: 'assets/sprites/player/wheel.png',
+    price: 0,
   },
+  {
+    motorcyclePosition: { x: 80, y: gameWindow.offsetHeight - 390 },
+    wheelsPosition: {
+      x: [80 + 2.3, 80 + 244.61],
+      y: [
+        gameWindow.offsetHeight - 390 + 181,
+        gameWindow.offsetHeight - 390 + 181,
+      ],
+    },
+    motorcycleImg: 'assets/sprites/player/motorcycle-2.png',
+    wheelImg: 'assets/sprites/player/wheel.png',
+    price: 0,
+  },
+  {
+    motorcyclePosition: { x: 80, y: gameWindow.offsetHeight - 390 },
+    wheelsPosition: {
+      x: [80 + 13.11, 80 + 314.21],
+      y: [
+        gameWindow.offsetHeight - 390 + 178.15,
+        gameWindow.offsetHeight - 390 + 178.15,
+      ],
+    },
+    motorcycleImg: 'assets/sprites/player/motorcycle-3.png',
+    wheelImg: 'assets/sprites/player/wheel.png',
+    price: 50,
+  },
+  {
+    motorcyclePosition: { x: 80, y: gameWindow.offsetHeight - 410 },
+    wheelsPosition: {
+      x: [80 - 13.5, 80 + 254.02],
+      y: [
+        gameWindow.offsetHeight - 410 + 196.31,
+        gameWindow.offsetHeight - 410 + 196.31,
+      ],
+    },
+    motorcycleImg: 'assets/sprites/player/motorcycle-4.png',
+    wheelImg: 'assets/sprites/player/wheel.png',
+    price: 250,
+  },
+  {
+    motorcyclePosition: { x: 80, y: gameWindow.offsetHeight - 400 },
+    wheelsPosition: {
+      x: [80 + 14.38, 80 + 276.35],
+      y: [
+        gameWindow.offsetHeight - 400 + 186,
+        gameWindow.offsetHeight - 400 + 186,
+      ],
+    },
+    motorcycleImg: 'assets/sprites/player/motorcycle-5.png',
+    wheelImg: 'assets/sprites/player/wheel.png',
+    price: 499,
+  },
+];
 
+export const playerConfig: PlayerConfig = {
   imgScale: 1,
-  motorcycleImg: 'assets/sprites/player/motorcycle.png',
-  wheelImg: 'assets/sprites/player/wheel.png',
 
   motorcycleSound: 'assets/sounds/player/motorcycle.mp3',
   motorcycleSoundLoudness: 0.3,
@@ -159,6 +216,7 @@ export const tccEmployerConfig: TccEmployerConfig = {
 export const coinConfig: CoinConfig = {
   coinImg: 'assets/sprites/player/coin.png',
   coinSound: 'assets/sounds/coin.mp3',
+  coinSoundLoudness: 0.3,
   coinGap: 100,
   coinGroupGap: [2500, 7000],
   coinsPerGroup: [3, 5],

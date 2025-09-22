@@ -1,5 +1,5 @@
 /**
- * motorcycle-scroll.ts
+ * motorcycleScroll.ts
  *
  * This file is responsible for motorcycle scroll animation which is
  * not considered part of the game.

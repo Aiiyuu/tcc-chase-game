@@ -1,0 +1,25 @@
+@use '../utils/variables' as *;
+@use '../utils/mixins' as *;
+@use '../utils/animations';
+
+.mouse {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 50%;
+    bottom: 10px;
+    transform: translate(-50%, 100px);
+    animation: slide-mouse calc($base-transition-time * 3) $bounce-easing-curve 1800ms;
+    animation-fill-mode: forwards;
+
+    #mouse2 {
+        animation: slide-mouse-scroll calc($base-transition-time * 3) $bounce-easing-curve;
+        animation-direction: alternate;
+        animation-iteration-count: infinite;
+        animation-delay: 1800ms;
+    }
+
+    @include on-tablet {
+        display: block;
+    }
+}

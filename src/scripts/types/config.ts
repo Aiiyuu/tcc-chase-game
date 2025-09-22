@@ -53,7 +53,7 @@ export interface GameConfig {
   road: string;
 }
 
-export interface PlayerConfig {
+export interface Motorcycle {
   motorcyclePosition: {
     x: number;
     y: number;
@@ -63,9 +63,13 @@ export interface PlayerConfig {
     y: number[];
   };
 
-  imgScale: number;
   motorcycleImg: string;
   wheelImg: string;
+  price: number;
+}
+
+export interface PlayerConfig {
+  imgScale: number;
 
   motorcycleSound: string;
   motorcycleSoundLoudness: number;
@@ -92,6 +96,7 @@ export interface TccEmployerConfig {
 export interface CoinConfig {
   coinImg: string;
   coinSound: string;
+  coinSoundLoudness: number;
   coinGap: number;
   coinGroupGap: number[];
   coinsPerGroup: number[];
