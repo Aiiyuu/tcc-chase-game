@@ -39,7 +39,9 @@ export default class Game {
   private healthPoints: number = gameConfig.healthPoints;
   private heartIcon: HTMLImageElement;
 
-  private scores: number = 0;
+  private scores: number = localStorage.getItem('bank')
+    ? Number(localStorage.getItem('bank'))
+    : 0;
   private scoreIcon: HTMLImageElement;
   private scoresPosition: Position = { x: 0, y: 0 };
 
@@ -635,6 +637,11 @@ export default class Game {
       this.backgroundMusic.pause();
       this.backgroundMusic.currentTime = 0;
     }
+  }
+
+  // Updates bank
+  updateScoresStorage(): void {
+    localStorage.setItem('bank', `${this.scores}`);
   }
 
   getIsDead(): boolean {

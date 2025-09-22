@@ -23,11 +23,10 @@ export default function gameLoop(params: GameLoopParams): void {
 
     // End game if player is dead
     if (game.getIsDead()) {
-      // Stop playing sounds when player is dead
-
       // Update game state (print game over)
       game.update(deltaTime);
 
+      // Stop playing sounds when player is dead
       game.stopBackgroundMusic();
       player.stopMotorcycleSound();
       return;

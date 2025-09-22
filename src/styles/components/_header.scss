@@ -1,9 +1,11 @@
 @use '../utils/mixins' as *;
 @use '../utils/variables' as *;
+@use '../utils/animations';
 
 .header {
     overflow: hidden;
     position: relative;
+    z-index: 9;
     height: 100vh;
     background: linear-gradient(to top, #FFE0B2 0%, #FFB74D 50%, #FF8A50 100%);
 
@@ -202,164 +204,6 @@
             width: 222px;
             height: 170px;
         }
-    }
-
-    &__mouse {
-        position: absolute;
-        left: 50%;
-        bottom: 10px;
-        transform: translate(-50%, 100px);
-        animation: slide-mouse calc($base-transition-time * 3) $bounce-easing-curve 1800ms;
-        animation-fill-mode: forwards;
-
-        #mouse2 {
-            animation: slide-mouse-scroll calc($base-transition-time * 3) $bounce-easing-curve;
-            animation-direction: alternate;
-            animation-iteration-count: infinite;
-            animation-delay: 1800ms;
-        }
-    }
-}
-
-
-@keyframes popup {
-    from {
-        transform: translateY(100%);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0%);
-        opacity: 1;
-    }
-
-}
-
-@keyframes slide-to-left {
-    from {
-        opacity: 0;
-        transform: translateX(100vw);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slide-to-right {
-    from {
-        opacity: 0;
-        transform: translateX(-100vw);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes ride {
-    from {
-        transform: translateX(-100vw);
-    }
-
-    to {
-        transform: translateX(0);
-    }
-}
-
-@keyframes motorcycle-vibration {
-    0% {
-        translate: 0 0;
-    }
-
-    10% {
-        translate: 1px -1.5px;
-    }
-
-    20% {
-        translate: -1px 1.5px;
-    }
-
-    30% {
-        translate: 1px -1.5px;
-    }
-
-    40% {
-        translate: -1px 1.5px;
-    }
-
-    50% {
-        translate: 1px -1.5px;
-    }
-
-    60% {
-        translate: -1px 1.5px;
-    }
-
-    70% {
-        translate: 1px -1.5px;
-    }
-
-    80% {
-        translate: -1px 1.5px;
-    }
-
-    90% {
-        translate: 1px -1.5px;
-    }
-
-    100% {
-        translate: 0 0;
-    }
-}
-
-@keyframes dust {
-    0% {
-        background-image: url("../assets/images/dust-1.svg");
-    }
-
-    20% {
-        background-image: url("../assets/images/dust-2.svg");
-    }
-
-    40% {
-        background-image: url("../assets/images/dust-3.svg");
-    }
-
-    60% {
-        background-image: url("../assets/images/dust-4.svg");
-    }
-
-    80% {
-        background-image: url("../assets/images/dust-5.svg");
-    }
-
-    100% {
-        background-image: url("../assets/images/dust-6.svg");
-    }
-}
-
-@keyframes slide-mouse {
-    from {
-        opacity: 0;
-        transform: translate(-50%, 100px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-    }
-}
-
-@keyframes slide-mouse-scroll {
-    from {
-        transform: translateY(13.74px);
-    }
-
-    to {
-        transform: translateY(0);
     }
 }
 

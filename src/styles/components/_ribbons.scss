@@ -1,0 +1,47 @@
+@use '../utils/variables' as *;
+
+.ribbons {
+    position: fixed;
+    z-index: 999;
+    inset: 0;
+    pointer-events: none;
+
+    &__item {
+        position: absolute;
+        top: 0;
+        width: 0;
+        height: calc(100% / $number-of-ribbons);
+        left: 0;
+        background: #4F200D;
+
+    }
+
+    &--active {
+        .ribbons__item {
+            @for $i from 0 through $number-of-ribbons - 1 {
+                &:nth-child(#{$i + 1}) {
+                    top: calc(100% / $number-of-ribbons * $i);
+                    animation: ribbon calc($base-transition-time * 8) linear forwards;
+                    animation-delay: calc($ribbons-base-delay * $i);
+                }
+            }
+        }
+    }
+}
+
+@keyframes ribbon {
+    0% {
+        width: 0;
+    }
+
+    50% {
+        width: 200%;
+    }
+
+    100% {
+        left: auto;
+        right: 0;
+        width: 0;
+    }
+
+}
