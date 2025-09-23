@@ -91,6 +91,9 @@ export interface TccEmployerConfig {
   };
   tccEmployerImages: string[];
   graveImages: string[];
+  hitSound: string;
+  hitSoundLoudness: number;
+  rotationSpeed: number;
 }
 
 export interface CoinConfig {

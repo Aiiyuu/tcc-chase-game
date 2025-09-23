@@ -13,6 +13,8 @@ export default class TccEmployer {
   private ctx: CanvasRenderingContext2D;
 
   private position: Position;
+  private targetPosition: Position = { x: -1, y: -1 };
+  private rotationState: number = 0;
   private gameSpeed: number = gameConfig.gameSpeed;
   private isDead: boolean = false;
 
@@ -27,6 +29,10 @@ export default class TccEmployer {
     tccEmployerConfig.tccEmployerImages[this.randomImageIndex]!;
   private randomGraveSrc: string =
     tccEmployerConfig.graveImages[this.randomImageIndex]!;
+
+  private audioContext: AudioContext | null = null;
+  private hitSoundBuffer: AudioBuffer | null = null;
+  private hitSoundLoaded: boolean = false;
 
   // Off-screen buffer canvas for optimized rendering
   private employerBufferCanvas: HTMLCanvasElement;
@@ -66,6 +72,73 @@ export default class TccEmployer {
       this.graveCtx.drawImage(this.randomGrave, 0, 0);
     };
     this.randomGrave.src = this.randomGraveSrc;
+
+    // Load sounds
+    this.loadHitSound();
+  }
+
+  // Loads grave hit sound
+  private async loadHitSound(): Promise<void> {
+    try {
+      this.audioContext = new AudioContext();
+
+      const response: Response = await fetch(tccEmployerConfig.hitSound);
+      const arrayBuffer: ArrayBuffer = await response.arrayBuffer();
+
+      this.hitSoundBuffer =
+        await this.audioContext.decodeAudioData(arrayBuffer);
+      this.hitSoundLoaded = true;
+    } catch (error) {
+      console.error('Error loading hit sound:', error);
+    }
+  }
+
+  // Play hit sound
+  public playHitSound(): void {
+    if (!this.audioContext || !this.hitSoundLoaded || !this.hitSoundBuffer) {
+      return;
+    }
+
+    const source: AudioBufferSourceNode =
+      this.audioContext.createBufferSource();
+    source.buffer = this.hitSoundBuffer;
+
+    const gainNode: GainNode = this.audioContext.createGain();
+    gainNode.gain.value = tccEmployerConfig.hitSoundLoudness;
+
+    source.connect(gainNode);
+    gainNode.connect(this.audioContext.destination);
+
+    source.start(0);
+  }
+
+  /**
+   * Smoothly moves from current position to target position
+   * @param current Current position
+   * @param target Target position
+   * @param speed Speed in units per second
+   * @param deltaTime Time elapsed since last frame
+   */
+  private moveTowards(
+    current: number,
+    target: number,
+    speed: number,
+    deltaTime: number,
+  ): number {
+    // Calculate distance to move based on deltaTime and speed (units per second)
+    const distance: number = target - current;
+
+    // If we're close enough to the target, we can stop moving
+    if (Math.abs(distance) < 1e-3) {
+      return target;
+    }
+
+    // Calculate how much to move this frame (speed * deltaTime gives us the movement per frame)
+    const moveDistance: number =
+      Math.sign(distance) * Math.min(Math.abs(distance), speed * deltaTime);
+
+    // Move the current position towards the target
+    return current + moveDistance;
   }
 
   /**
@@ -73,7 +146,34 @@ export default class TccEmployer {
    */
   public update(deltaTime: number): void {
     // Move Employers
-    this.position.x -= this.gameSpeed * deltaTime;
+    if (this.targetPosition.x === -1 && this.targetPosition.y === -1) {
+      this.position.x -= this.gameSpeed * deltaTime;
+    } else {
+      // Rotate grave image smoothly
+      this.rotationState =
+        (this.rotationState + tccEmployerConfig.rotationSpeed * deltaTime) %
+        360;
+    }
+
+    // Move Employers along the X-axis (towards targetPosition.x)
+    if (this.targetPosition.x !== -1) {
+      this.position.x = this.moveTowards(
+        this.position.x,
+        this.targetPosition.x,
+        this.gameSpeed,
+        deltaTime,
+      );
+    }
+
+    // Move Employers along the Y-axis (towards targetPosition.y) only if targetPosition.y is defined
+    if (this.targetPosition.y !== -1) {
+      this.position.y = this.moveTowards(
+        this.position.y,
+        this.targetPosition.y,
+        this.gameSpeed,
+        deltaTime,
+      );
+    }
 
     this.draw();
   }
@@ -109,11 +209,23 @@ export default class TccEmployer {
    */
   public drawGrave(): void {
     if (this.randomGrave.complete) {
+      const centerX: number =
+        this.position.x + this.graveBufferCanvas.width / 2;
+      const centerY: number =
+        this.position.y - this.graveBufferCanvas.height / 2;
+
+      this.ctx.save();
+
+      this.ctx.translate(centerX, centerY);
+      this.ctx.rotate((this.rotationState * Math.PI) / 180);
+
       this.ctx.drawImage(
         this.graveBufferCanvas,
-        this.position.x,
-        this.position.y - this.graveBufferCanvas.height,
+        -this.graveBufferCanvas.width / 2,
+        -this.graveBufferCanvas.height / 2,
       );
+
+      this.ctx.restore();
     }
   }
 
@@ -121,7 +233,11 @@ export default class TccEmployer {
    * Return true if the TCC Employer is off the canvas window
    */
   public isOffScreen(): boolean {
-    return this.position.x + this.randomEmployer.width < 0;
+    return (
+      this.position.x + this.randomEmployer.width <= 0 ||
+      (this.position.x === this.targetPosition.x &&
+        this.position.y === this.targetPosition.y)
+    );
   }
 
   public getPosition(): Position {
@@ -141,5 +257,9 @@ export default class TccEmployer {
 
   public setIsDead(): void {
     this.isDead = true;
+  }
+
+  public setTargetPosition(position: Position): void {
+    this.targetPosition = position;
   }
 }
