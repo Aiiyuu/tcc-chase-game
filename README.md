@@ -77,22 +77,22 @@ Make sure you have the following installed:
 ### 1. Clone the Repository
 Open your terminal and run:
 ```bash
-   git clone https://github.com/Aiiyuu/tcc-chase-game.git
+git clone https://github.com/Aiiyuu/tcc-chase-game.git
 ```
 ```bash
-   cd tcc-chase-game
+cd tcc-chase-game
 ```
 
 ### 2. Install Dependencies
 Run the following command to install all required packages:
 ```bash
-   npm install
+npm install
 ```
 
 ### 3. Start the Development Server
 Launch the game locally with:
 ```bash
-   npm run dev
+npm run dev
 ```
 > Make sure you have [Node.js](https://nodejs.org/) installed.
 
