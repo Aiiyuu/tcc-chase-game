@@ -182,6 +182,9 @@ export const tccEmployerConfig = {
         'assets/sprites/obstacles/grave-3.png',
         'assets/sprites/obstacles/grave-4.png',
     ],
+    hitSound: '../assets/sounds/hit.mp3',
+    hitSoundLoudness: 1.2,
+    rotationSpeed: 350,
 };
 export const coinConfig = {
     coinImg: 'assets/sprites/player/coin.png',

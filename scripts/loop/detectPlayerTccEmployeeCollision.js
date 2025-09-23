@@ -29,6 +29,8 @@ export default function detectPlayerTccEmployeeCollision(game, player, tccEmploy
         const isVerticalCollision = playerBottom >= employerTop;
         if (isHorizontalCollision && isVerticalCollision) {
             tccEmployer.setIsDead();
+            tccEmployer.playHitSound();
+            tccEmployer.setTargetPosition({ x: gameConfig.canvasWidth, y: 0 });
             player.playRandomSound();
             game.subtractHealthPoints(gameConfig.damage);
             return;
