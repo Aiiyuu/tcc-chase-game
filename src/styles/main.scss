@@ -8,6 +8,7 @@
 @use './components/buttons';
 @use './components/mouse';
 @use './components/loader';
+@use './components/add';
 
 * {
     box-sizing: border-box;
@@ -45,4 +46,13 @@ body {
 
 .hidden {
     display: none !important;
+}
+
+.stretch-link {
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
