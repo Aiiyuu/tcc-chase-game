@@ -6,6 +6,7 @@
  */
 import { triggerRibbons, RIBBONS_DELAY } from './ribbons.js';
 import { setupScrollAnimation } from './setupScrollAnimation.js';
+import { showLoadingUntilSiteLoaded } from './loader.js';
 import { setupShop, handleTentaclesMovement, handleTentaclesCollapse, setupShopSlider, } from './shop.js';
 /**
  * This function sets up the click event listener for the play button.
@@ -28,6 +29,7 @@ function scrollAnimation() {
     setupShopSlider();
 }
 window.addEventListener('DOMContentLoaded', () => {
+    showLoadingUntilSiteLoaded();
     setupPlayButtonEventListener();
     setupShop();
     window.addEventListener('scroll', scrollAnimation);

@@ -89,16 +89,27 @@
     <div class="shop__motorcycle"></div>
 
     <div class="shop__navigation-wrapper">
-      <div class="shop__price">
-        <img class="shop__coin-icon" src="./assets/sprites/player/coin.png" alt="coins">
-        <span id="coin-counter" class="shop__price-counter">0</span>
+      <div class="shop__navigation-nav">
+        <div class="shop__price">
+          <img class="shop__coin-icon" src="./assets/sprites/player/coin.png" alt="coins">
+          <span id="coin-counter" class="shop__price-counter">0</span>
+        </div>
+
+        <div class="add">
+          <a class="stretch-link" target="_blank" href="https://aiiyuu.github.io/Astro-Blaster/"></a>
+
+          <h4 class="add__text">Also try AstroBlaster</h4>
+          <img class="add__spaceship" src="./assets/images/spaceship.png" alt="spaceship">
+          <img class="add__planet" src="./assets/images/planet.png" alt="planet">
+        </div>
       </div>
+
       <div class="shop__navigation">
         <ul class="shop__navigation-list">
           <li class="shop__navigation-item">
             <img class="shop__coin-icon" src="./assets/sprites/player/coin.png" alt="coins">
             <span id="price-counter" class="shop__coin-counter">0</span>
-          </li>
+           </li>
           <li class="shop__navigation-item">
             <button id="purchase-button" class="button button--purchase">Unlock</button>
           </li>
@@ -108,7 +119,6 @@
         </ul>
       </div>
     </div>
-
   </section>
 </main>
 
@@ -164,6 +174,13 @@
     <li class="ribbons__item"></li>
     <li class="ribbons__item"></li>
   </ul>
+</div>
+
+<div class="loading">
+  <div class="loading__inner">
+    <div class="loading__ball"></div>
+    <div class="loading__text">loading...</div>
+  </div>
 </div>
 
 <script type="module" src="./scripts/index.js"></script>
