@@ -7,6 +7,7 @@
 
 import { triggerRibbons, RIBBONS_DELAY } from './ribbons.js';
 import { setupScrollAnimation } from './setupScrollAnimation.js';
+import { showLoadingUntilSiteLoaded } from './loader.js';
 import {
   setupShop,
   handleTentaclesMovement,
@@ -42,6 +43,7 @@ function scrollAnimation(): void {
 }
 
 window.addEventListener('DOMContentLoaded', (): void => {
+  showLoadingUntilSiteLoaded();
   setupPlayButtonEventListener();
   setupShop();
 

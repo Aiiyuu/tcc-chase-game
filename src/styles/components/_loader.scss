@@ -1,0 +1,45 @@
+@use '../utils/variables' as *;
+@use '../utils/animations';
+
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $loader-background;
+
+    &__ball {
+        position: relative;
+        display: inline-block;
+        height: 37px;
+        width: $ball-width;
+
+        &::before {
+            position: absolute;
+            content: '';
+            display: block;
+            top: 0;
+            width: $ball-width;
+            height: $ball-height;
+            border-radius: 50%;
+            background-color: $loader-color;
+            transform-origin: 50%;
+            animation: bounce 500ms alternate infinite ease;
+        }
+    }
+
+    &__text {
+        color: $loader-color;
+        font-size: 20px;
+        font-weight: bold;
+        display: inline-block;
+        text-transform: capitalize;
+        margin-left: 5px;
+    }
+}
+
