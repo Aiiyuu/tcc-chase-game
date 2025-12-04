@@ -7,6 +7,9 @@
 
 // import entities
 import Game from '../entities/game.js';
+import Player from '../entities/player.js';
+import TccEmployer from '../entities/tccEmployer.js';
+import Coin from '../entities/coin.js';
 
 // import types
 import type { GameInitResult } from '../types/initGame.js';
@@ -19,8 +22,11 @@ export default function initGame(
 ): GameInitResult {
   // Initialize game entities
   const game = new Game(canvas, ctx);
+  const player = new Player(canvas, ctx);
+  const tccEmployee: TccEmployer[] = [];
+  const coins: Coin[] = [];
 
   initKeyboardControls();
 
-  return { game };
+  return { game, player, tccEmployee, coins };
 }

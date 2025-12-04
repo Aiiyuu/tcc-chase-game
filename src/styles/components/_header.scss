@@ -1,0 +1,209 @@
+@use '../utils/mixins' as *;
+@use '../utils/variables' as *;
+@use '../utils/animations';
+
+.header {
+    overflow: hidden;
+    position: relative;
+    z-index: 9;
+    height: 100vh;
+    background: linear-gradient(to top, #FFE0B2 0%, #FFB74D 50%, #FF8A50 100%);
+
+    &__sun {
+        position: absolute;
+        top: 50%;
+        right: 12%;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: linear-gradient(to top, #FFF 0%, #FFF9C4 40%, #FFE066 100%);
+        animation: popup $base-transition-time $bounce-easing-curve 350ms;
+        animation-fill-mode: forwards;
+
+        // Hide by default
+        transform: translateY(100%);
+
+        @include on-tablet {
+            top: 20%;
+            right: 8%;
+            width: 600px;
+            height: 600px;
+        }
+
+        @include on-desktop {
+            top: 20%;
+            right: 15%;
+            width: 700px;
+            height: 700px;
+        }
+    }
+
+    &__grass {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 180px;
+        width: 100%;
+        background-image: url("../assets/images/grass.svg");
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: cover;
+        animation: popup $base-transition-time $bounce-easing-curve 250ms;
+        animation-fill-mode: forwards;
+
+        // Hide by default
+        transform: translateY(100%);
+
+        @include on-tablet {
+            height: 270px;
+        }
+    }
+
+    &__road {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        width: 100%;
+        background-image: url("../assets/images/road.svg");
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: cover;
+        animation: popup $base-transition-time $default-ease-timing 150ms;
+        animation-fill-mode: forwards;
+
+        // Hide by default
+        transform: translateY(100%);
+
+
+        @include on-tablet {
+            height: 150px;
+        }
+    }
+
+    &__tree {
+        position: absolute;
+        bottom: 80px;
+        background-image: url("../assets/images/tree.svg");
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: contain;
+
+        @include on-tablet {
+            bottom: 150px;
+        }
+
+        &--1 {
+            right: 3%;
+            width: 240px;
+            height: 210px;
+            animation: slide-to-left calc($base-transition-time * 1.4) $bounce-easing-curve 200ms;
+            animation-fill-mode: forwards;
+
+            // Hide be default
+            transform: translateX(100vw);
+
+            @include on-tablet {
+                right: 3%;
+                width: 380px;
+                height: 315px;
+            }
+
+            @include on-desktop {
+                right: 5%;
+                width: 507px;
+                height: 370px;
+            }
+        }
+
+        &--2 {
+            left: -2%;
+            width: 180px;
+            height: 132px;
+            animation: slide-to-right calc($base-transition-time * 1.4) $bounce-easing-curve 340ms;
+            animation-fill-mode: forwards;
+
+            // Hide be default
+            transform: translateX(-100vw);
+
+            @include on-tablet {
+                left: -2%;
+                width: 300px;
+                height: 216px;
+            }
+
+            @include on-desktop {
+                left: -2%;
+                width: 380px;
+                height: 276px;
+            }
+        }
+    }
+
+    &__motorcycle {
+        position: absolute;
+        left: 0;
+        bottom: 70px;
+        width: 300px;
+        height: 150px;
+        background-image: url("../assets/images/motorcycle.png");
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: contain;
+        transition: left 10ms linear;
+        animation: ride calc($base-transition-time * 8) $default-ease-timing 340ms,
+        motorcycle-vibration calc($base-transition-time * 2) $bounce-easing-curve 340ms infinite;
+        animation-fill-mode: forwards;
+
+        // Hide be default
+        transform: translateX(-100vw);
+
+        @include on-tablet {
+            bottom: 56px;
+            width: 490px;
+            height: 350px;
+        }
+
+        @include on-desktop {
+            bottom: 40px;
+            width: 540px;
+            height: 390px;
+        }
+    }
+
+    &__motorcycle-dust {
+        position: absolute;
+        left: 0;
+        bottom: 59px;
+        width: 90px;
+        height: 60px;
+        background-image: url("../assets/images/dust-1.svg");
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: contain;
+        transition: left 10ms linear;
+        animation: ride calc($base-transition-time * 8) $default-ease-timing 340ms,
+        dust calc($base-transition-time * 5) $default-ease-timing 340ms infinite;
+
+        //dust calc($base-transition-time * 5) $default-ease-timing 340ms infinite
+        animation-fill-mode: forwards;
+
+        // Hide be default
+        transform: translateX(-100vw);
+
+        @include on-tablet {
+            bottom: 86px;
+            width: 192px;
+            height: 120px;
+        }
+
+        @include on-desktop {
+            bottom: 72px;
+            width: 222px;
+            height: 170px;
+        }
+    }
+}
+

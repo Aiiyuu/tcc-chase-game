@@ -5,23 +5,51 @@
  * not considered part of the game.
  */
 
+import { triggerRibbons, RIBBONS_DELAY } from './ribbons.js';
+import { setupScrollAnimation } from './setupScrollAnimation.js';
+import { showLoadingUntilSiteLoaded } from './loader.js';
+import {
+  setupShop,
+  handleTentaclesMovement,
+  handleTentaclesCollapse,
+  setupShopSlider,
+} from './shop.js';
+
 /**
  * This function sets up the click event listener for the play button.
- *
- * @param playButton - The play button element.
  */
-function setupPlayButtonEventListener(
-  playButton: HTMLButtonElement,
-  gameWindow: HTMLDivElement,
-): void {
+function setupPlayButtonEventListener(): void {
+  const playButton = document.getElementById(
+    'start-game',
+  )! as HTMLButtonElement;
+  const gameWindow = document.getElementById('game')! as HTMLDivElement;
+
   playButton.addEventListener('click', (): void => {
-    gameWindow.classList.add('show');
+    window.removeEventListener('scroll', scrollAnimation);
+    window.removeEventListener('mousemove', handleTentaclesMovement);
+    window.removeEventListener('click', handleTentaclesCollapse);
+
+    triggerRibbons();
+
+    setTimeout((): void => {
+      gameWindow.classList.add('show');
+    }, RIBBONS_DELAY / 2);
   });
 }
 
-const PLAY_BUTTON = document.getElementById('start-game')! as HTMLButtonElement;
-const GAME_WINDOW = document.getElementById('game')! as HTMLDivElement;
+function scrollAnimation(): void {
+  setupScrollAnimation();
+  setupShopSlider();
+}
 
 window.addEventListener('DOMContentLoaded', (): void => {
-  setupPlayButtonEventListener(PLAY_BUTTON, GAME_WINDOW);
+  showLoadingUntilSiteLoaded();
+  setupPlayButtonEventListener();
+  setupShop();
+
+  window.addEventListener('scroll', scrollAnimation);
+  window.addEventListener('mousemove', handleTentaclesMovement);
+  window.addEventListener('click', handleTentaclesCollapse);
 });
+
+setTimeout((): void => window.scrollTo(0, 0), 10);

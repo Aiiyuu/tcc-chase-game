@@ -1,0 +1,171 @@
+@use '../utils/variables' as *;
+
+@keyframes popup {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+
+}
+
+@keyframes slide-to-left {
+    from {
+        opacity: 0;
+        transform: translateX(100vw);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-to-right {
+    from {
+        opacity: 0;
+        transform: translateX(-100vw);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes ride {
+    from {
+        transform: translateX(-100vw);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes motorcycle-vibration {
+    0% {
+        translate: 0 0;
+    }
+
+    10% {
+        translate: 1px -1.5px;
+    }
+
+    20% {
+        translate: -1px 1.5px;
+    }
+
+    30% {
+        translate: 1px -1.5px;
+    }
+
+    40% {
+        translate: -1px 1.5px;
+    }
+
+    50% {
+        translate: 1px -1.5px;
+    }
+
+    60% {
+        translate: -1px 1.5px;
+    }
+
+    70% {
+        translate: 1px -1.5px;
+    }
+
+    80% {
+        translate: -1px 1.5px;
+    }
+
+    90% {
+        translate: 1px -1.5px;
+    }
+
+    100% {
+        translate: 0 0;
+    }
+}
+
+@keyframes dust {
+    0% {
+        background-image: url("../assets/images/dust-1.svg");
+    }
+
+    20% {
+        background-image: url("../assets/images/dust-2.svg");
+    }
+
+    40% {
+        background-image: url("../assets/images/dust-3.svg");
+    }
+
+    60% {
+        background-image: url("../assets/images/dust-4.svg");
+    }
+
+    80% {
+        background-image: url("../assets/images/dust-5.svg");
+    }
+
+    100% {
+        background-image: url("../assets/images/dust-6.svg");
+    }
+}
+
+@keyframes slide-mouse {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes slide-mouse-scroll {
+    from {
+        transform: translateY(13.74px);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes bounce {
+    0% {
+        top: $bounce-height;
+        height: 5px;
+        border-radius: 60px 60px 20px 20px;
+        transform: scaleX(2);
+    }
+
+    35% {
+        height: $ball-height;
+        border-radius: 50%;
+        transform: scaleX(1);
+    }
+
+    100% {
+        top: 0;
+    }
+}
